@@ -3,13 +3,13 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-static std::string path_brick_sprite = "briques.png";
+static std::string path_brick_sprite = "/Users/nikitaster/Xcode_Projects/Project Arkanoid/Project Arkanoid/briques.png";
 
 class Sprite{
 protected:
-    bool isDead;
     sf::Sprite sprite;
 public:
+    bool isDead;
     Sprite(){
         this->isDead = false;
     }
@@ -60,9 +60,103 @@ public:
 };
 
 
+class Velocity{
+    float speed_x;
+    float speed_y;
+public:
+    Velocity(float speed_x = 5, float speed_y = 5):speed_x(speed_x),speed_y(speed_y) {}
+    void reverse(){
+        this->speed_x *= -1;
+        this->speed_y *= -1;
+    }
+    void reverseX(){
+        this->speed_x *= -1;
+    }
+    void reverseY(){
+        this->speed_y *= -1;
+    }
+    float & get_speedX() {return this->speed_x;}
+    float & get_speedY() {return this->speed_y;}
+    
+};
+
+class MovableSprite: public Sprite{
+protected:
+    Velocity velocity;
+public:
+    MovableSprite() {velocity = Velocity(5, 5);}
+    inline sf::Sprite &get_sprite() {return this->sprite;}
+    void move()
+    {
+        this->sprite.move(this->velocity.get_speedX(), this->velocity.get_speedY());
+    }
+    bool isMoving()
+    {
+        if (this->velocity.get_speedX() || this->velocity.get_speedY())
+            return true;
+        return false;
+    }
+    void collideInto(Sprite &other);
+};
+
+class Puddle: public MovableSprite{
+    sf::Texture texture;
+public:
+    Puddle(){
+        this->velocity = Velocity(5, 0);
+        this->texture.loadFromFile(path_brick_sprite, sf::IntRect(0, 0, 300, 50));
+        this->sprite.setTexture(texture);
+        this->sprite.move(800/2 - 150, 500);
+    }
+};
+
+
+class Puck: public MovableSprite{
+    sf::CircleShape shape;
+public:
+    Puck(){
+        this->shape = sf::CircleShape(20.f);
+        this->shape.setFillColor(sf::Color::Red);
+        this->shape.setPosition(800/2 - 20, 500 - 40);
+    }
+    inline sf::CircleShape get_shape() {return this->shape;}
+};
+
+
+class PuckSupply: public Puck{
+    std::vector<Puck> pucks;
+public:
+    PuckSupply()
+    {
+        this->pucks.push_back(Puck());
+        this->pucks.push_back(Puck());
+        this->pucks.push_back(Puck());
+    }
+    bool have_alive_puck()
+    {
+        for(auto it = this->pucks.begin(); it < this->pucks.end(); it++)
+        {
+            if (!it->isDead)
+            return true;
+        }
+        return false;
+    }
+    Puck & get_alive_puck()
+    {
+        for(auto it = this->pucks.begin(); it < this->pucks.end(); it++)
+        {
+            if (!it->isDead)
+                return *it;
+        }
+    }
+};
+
+
 class MainModel {
 public:
     BrickPile bricks;
+    Puddle puddle;
+    PuckSupply pucks;
 	MainModel() {}
 };
 
@@ -106,6 +200,17 @@ public:
         //        this->window.draw(shape);
         for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
             this->window.draw(it->get_sprite());
+        
+        this->window.draw(this->model->puddle.get_sprite());
+        
+//        убить мяч
+//        this->model->pucks.get_alive_puck().isDead = true;
+//        сделать проверку
+//        this->model->pucks.have_alive_puck()
+//        gameover
+        
+        this->window.draw(this->model->pucks.get_alive_puck().get_shape());
+        
         this->window.display();
     }
     
@@ -119,9 +224,15 @@ public:
             if (event.text.unicode < 128)
                 std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            {
                 std::cout << "Move LEFT" << std::endl;
+                this->model->puddle.move();
+            }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            {
                 std::cout << "Move RIGHT" << std::endl;
+                this->model->puddle.move();
+            }
         }
     }
 };
