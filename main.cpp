@@ -3,7 +3,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-static std::string path_brick_sprite = "/Users/nikitaster/Xcode_Projects/Project Arkanoid/Project Arkanoid/briques.png";
+static std::string path_brick_sprite = "briques.png";
 
 class Sprite{
 protected:
