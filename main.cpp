@@ -1,10 +1,68 @@
 #include <iostream>
+#include <vector>
+#include <string>
 #include <SFML/Graphics.hpp>
+
+static std::string path_brick_sprite = "briques.png";
+
+class Sprite{
+protected:
+    bool isDead;
+    sf::Sprite sprite;
+public:
+    Sprite(){
+        this->isDead = false;
+    }
+    virtual sf::Sprite &get_sprite() = 0;
+};
+
+
+class StationarySprite: public Sprite{
+public:
+    inline sf::Sprite &get_sprite() {return this->sprite;}
+};
+
+
+class Brick: public StationarySprite{
+public:
+    Brick(int x=0, int y=0, int width=100, int height=50):StationarySprite(){
+        sf::Texture texture;
+        texture.create(100, 50);
+        this->sprite.setTexture(texture);
+        this->sprite.move(x, y);
+    }
+};
+
+
+class BrickPile{
+public:
+    std::vector<Brick> bricks;
+    sf::Texture texture;
+    BrickPile()
+    {
+        this->texture.loadFromFile(path_brick_sprite);
+        this->generate_objects();
+        
+    }
+    void generate_objects()
+    {
+        for (int i = 0; i < 150; i+=50)
+        {
+            for (int j = 0; j < 800; j+=100)
+            {
+                this->bricks.push_back(Brick(j, i, 100, 50));
+                //                this->texture.setRepeated(true);
+                //                this->texture.setSmooth(true);
+                this->bricks.back().get_sprite().setTexture(this->texture);
+            }
+        }
+    }
+};
 
 
 class MainModel {
-	
 public:
+    BrickPile bricks;
 	MainModel() {}
 };
 
@@ -20,12 +78,52 @@ public:
 class MainView {
 	MainModel *model;
 	MainController *controller;
+    sf::RenderWindow window;
 public:
 	MainView(MainModel &model, MainController &controller)
 	{
 		this->model = &model;
 		this->controller = &controller;
+        this->window.create(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
+        this->window.setFramerateLimit(60);
 	}
+    
+    void run()
+    {
+//       сделать меню
+        while (this->window.isOpen())
+        {
+            this->process_events();
+//            controller logics
+            this->process_draw();
+            sf::sleep(sf::milliseconds(10));
+        }
+    }
+    
+    void process_draw()
+    {
+        this->window.clear();
+        //        this->window.draw(shape);
+        for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
+            this->window.draw(it->get_sprite());
+        this->window.display();
+    }
+    
+    void process_events()
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                this->window.close();
+            if (event.text.unicode < 128)
+                std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                std::cout << "Move LEFT" << std::endl;
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+                std::cout << "Move RIGHT" << std::endl;
+        }
+    }
 };
 
 
@@ -34,8 +132,8 @@ int main()
 	MainModel model;
 	MainController controller(model);
 	MainView view(model, controller);
-
-	system("pause");
+    view.run();
+    
 	return 0;
 }
 
