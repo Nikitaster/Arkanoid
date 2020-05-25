@@ -53,4 +53,5 @@
 1. Перейти в проводнике в корень проекта (туда, где будут исполняемые файлы)
 2.  git init
 3.  git remote add origin https://gitlab.com/nikitaster/project-arkanoid
-4.  git pull origin master
+4.  git branch --set-upstream-to=origin/master master
+5.  git pull origin master
