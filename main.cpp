@@ -7,7 +7,38 @@
 
 #include <SFML/Graphics.hpp>
 
-static std::string path_brick_sprite = "briques.png";
+class Texture
+{
+protected:
+    sf::Texture texture;
+public:
+    Texture() {}
+    virtual sf::Texture &get_texture() = 0;
+};
+
+class TextureBall: public Texture
+{
+    std::string path = "50px-Floorball_ball.svg.png";
+public:
+    TextureBall() {this->texture.loadFromFile(this->path);}
+    sf::Texture &get_texture() {return this->texture;}
+};
+
+class TextureBrick: public Texture
+{
+    std::string path = "briques.png";
+public:
+    TextureBrick() {this->texture.loadFromFile(this->path, sf::IntRect(0, 0, 100, 50));}
+    sf::Texture &get_texture() {return this->texture;}
+};
+
+class TexturePuddle: public Texture
+{
+    std::string path = "briques.png";
+public:
+    TexturePuddle() {this->texture.loadFromFile(this->path, sf::IntRect(0, 0, 300, 50));}
+    sf::Texture &get_texture() {return this->texture;}
+};
 
 class Sprite{
 protected:
@@ -20,7 +51,6 @@ public:
     virtual sf::Sprite &get_sprite() = 0;
 };
 
-
 class StationarySprite: public Sprite{
 public:
     inline sf::Sprite &get_sprite() {return this->sprite;}
@@ -28,23 +58,24 @@ public:
 
 
 class Brick: public StationarySprite{
+    static TextureBrick texture;
 public:
     Brick(int x=0, int y=0, int width=100, int height=50):StationarySprite(){
         sf::Texture texture;
         texture.create(100, 50);
-        this->sprite.setTexture(texture);
+        this->sprite.setTexture(this->texture.get_texture());
         this->sprite.move(x, y);
     }
 };
+
+TextureBrick Brick::texture = TextureBrick();
 
 
 class BrickPile{
 public:
     std::vector<Brick> bricks;
-    sf::Texture texture;
     BrickPile()
     {
-        this->texture.loadFromFile(path_brick_sprite);
         this->generate_objects();
         
     }
@@ -57,7 +88,6 @@ public:
                 this->bricks.push_back(Brick(j, i, 100, 50));
                 //                this->texture.setRepeated(true);
                 //                this->texture.setSmooth(true);
-                this->bricks.back().get_sprite().setTexture(this->texture);
             }
         }
     }
@@ -116,27 +146,30 @@ public:
 };
 
 class Puddle: public MovableSprite{
-    sf::Texture texture;
+    static TexturePuddle texture;
 public:
     Puddle(){
         this->velocity = Velocity(0, 5);
-        this->texture.loadFromFile(path_brick_sprite, sf::IntRect(0, 0, 300, 50));
-        this->sprite.setTexture(texture);
+        this->sprite.setTexture(texture.get_texture());
         this->sprite.move(800/2 - 150, 500);
     }
 };
 
+TexturePuddle Puddle::texture = TexturePuddle();
+
 
 class Puck: public MovableSprite{
-    sf::CircleShape shape;
+//    sf::Texture texture;
+    static TextureBall texture;
 public:
     Puck(){
-        this->shape = sf::CircleShape(20.f);
-        this->shape.setFillColor(sf::Color::Red);
-        this->shape.setPosition(800/2 - 20, 500 - 40);
+        this->velocity = Velocity(90, 5);
+//        this->texture.loadFromFile(path_brick_sprite, sf::IntRect(0, 0, 50, 50));
+        this->sprite.setTexture(texture.get_texture());
+        this->sprite.setPosition(800/2 - 20, 500 - 40);
     }
-    inline sf::CircleShape get_shape() {return this->shape;}
 };
+TextureBall Puck::texture = TextureBall();
 
 
 class PuckSupply: public Puck{
@@ -243,7 +276,7 @@ public:
 //        this->model->pucks.have_alive_puck()
 //        gameover
         
-        this->window.draw(this->model->pucks.get_alive_puck().get_shape());
+        this->window.draw(this->model->pucks.get_alive_puck().get_sprite());
         
         this->window.display();
     }
@@ -251,6 +284,7 @@ public:
     void process_logic()
     {
         this->controller->move_puddle();
+        this->model->pucks.get_alive_puck().move();
     }
     
     void process_events()
