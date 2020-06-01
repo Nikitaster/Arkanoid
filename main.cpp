@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 static std::string path_brick_sprite = "briques.png";
@@ -63,8 +64,13 @@ public:
 class Velocity{
     float speed_x;
     float speed_y;
+    int speed;
 public:
-    Velocity(float speed_x = 5, float speed_y = 5):speed_x(speed_x),speed_y(speed_y) {}
+    Velocity(int direction = 90, int speed = 5)
+    {
+        this->speed = speed;
+        this->setDirection(direction);
+    }
     void reverse(){
         this->speed_x *= -1;
         this->speed_y *= -1;
@@ -75,16 +81,23 @@ public:
     void reverseY(){
         this->speed_y *= -1;
     }
+    void setDirection(int d) {
+        this->speed_x = cos(d * M_PI/180) * (double)this->speed;
+        this->speed_y = sin(d * M_PI/180) * (double)this->speed;
+    }
+    
+    int getDirection() {
+        return ((int)(atan2(this->speed_y, this->speed_x) * 180/M_PI));
+    }
     float & get_speedX() {return this->speed_x;}
     float & get_speedY() {return this->speed_y;}
     
 };
 
 class MovableSprite: public Sprite{
-protected:
-    Velocity velocity;
 public:
-    MovableSprite() {velocity = Velocity(5, 5);}
+    Velocity velocity;
+    MovableSprite() {velocity = Velocity();}
     inline sf::Sprite &get_sprite() {return this->sprite;}
     void move()
     {
@@ -103,7 +116,7 @@ class Puddle: public MovableSprite{
     sf::Texture texture;
 public:
     Puddle(){
-        this->velocity = Velocity(5, 0);
+        this->velocity = Velocity(0, 5);
         this->texture.loadFromFile(path_brick_sprite, sf::IntRect(0, 0, 300, 50));
         this->sprite.setTexture(texture);
         this->sprite.move(800/2 - 150, 500);
@@ -167,6 +180,22 @@ public:
 	{
 		this->model = &model;
 	}
+    void move_puddle_right()
+    {
+        this->model->puddle.velocity.setDirection(0);
+    }
+    void move_puddle_left()
+    {
+        this->model->puddle.velocity.setDirection(180);
+    }
+    void stop_puddle()
+    {
+        this->model->puddle.velocity.get_speedX() = 0;
+    }
+    void move_puddle()
+    {
+        this->model->puddle.move();
+    }
 };
 
 class MainView {
@@ -180,6 +209,7 @@ public:
 		this->controller = &controller;
         this->window.create(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
         this->window.setFramerateLimit(60);
+        this->model->puddle.velocity.get_speedX() = 0;
 	}
     
     void run()
@@ -188,9 +218,10 @@ public:
         while (this->window.isOpen())
         {
             this->process_events();
+            this->process_logic();
 //            controller logics
             this->process_draw();
-            sf::sleep(sf::milliseconds(10));
+//            sf::sleep(sf::milliseconds(10));
         }
     }
     
@@ -214,6 +245,11 @@ public:
         this->window.display();
     }
     
+    void process_logic()
+    {
+        this->controller->move_puddle();
+    }
+    
     void process_events()
     {
         sf::Event event;
@@ -223,15 +259,23 @@ public:
                 this->window.close();
             if (event.text.unicode < 128)
                 std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            if (event.type == sf::Event::KeyPressed)
             {
-                std::cout << "Move LEFT" << std::endl;
-                this->model->puddle.move();
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+                {
+                    std::cout << "Move LEFT" << event.key.code << std::endl;
+                    this->controller->move_puddle_left();
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+                {
+                    std::cout << "Move RIGHT" << std::endl;
+                    this->controller->move_puddle_right();
+                }
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            {
-                std::cout << "Move RIGHT" << std::endl;
-                this->model->puddle.move();
+            if (event.type == sf::Event::KeyReleased){
+                if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right ||
+                    event.key.code == sf::Keyboard::A || event.key.code == sf::Keyboard::D)
+                    this->controller->stop_puddle();
             }
         }
     }
@@ -240,84 +284,84 @@ public:
 
 int main()
 {
-	MainModel model;
-	MainController controller(model);
-	MainView view(model, controller);
+    MainModel model;
+    MainController controller(model);
+    MainView view(model, controller);
     view.run();
-    
-	return 0;
+
+    return 0;
 }
 
 
 
 //int main()
 //{
-//	sf::RenderWindow window(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
-//	window.setFramerateLimit(60);
+//    sf::RenderWindow window(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
+//    window.setFramerateLimit(60);
 //
-//	sf::CircleShape shape(100.f);
-//	shape.setFillColor(sf::Color::Green);
-//	float speed_y = 5;
-//	float speed_x = 5;
+//    sf::CircleShape shape(100.f);
+//    shape.setFillColor(sf::Color::Green);
+//    float speed_y = 10;
+//    float speed_x = 10;
 //
-//	sf::CircleShape shape2(100.f);
-//	shape2.setFillColor(sf::Color::Red);
-//	float speed_y2 = 2;
-//	float speed_x2 = 2;
-//	while (window.isOpen())
-//	{
-//		sf::Event event;
-//		while (window.pollEvent(event))
-//		{
-//			if (event.type == sf::Event::Closed)
-//				window.close();
-//			if (event.text.unicode < 128)
-//				std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
-//		}
+//    sf::CircleShape shape2(100.f);
+//    shape2.setFillColor(sf::Color::Red);
+//    float speed_y2 = 2;
+//    float speed_x2 = 2;
+//    while (window.isOpen())
+//    {
+//        sf::Event event;
+//        while (window.pollEvent(event))
+//        {
+//            if (event.type == sf::Event::Closed)
+//                window.close();
+//            if (event.text.unicode < 128)
+//                std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
+//        }
 //
-//		window.setActive();
-//		window.clear();
-//		window.draw(shape);
-//		window.draw(shape2);
-//		window.display();
-//		sf::sleep(sf::milliseconds(10));
-//	
-//		sf::Vector2f xy = shape.getPosition();
-//		std::cout << xy.x << ' ' << xy.y << std::endl;
+//        window.setActive();
+//        window.clear();
+//        window.draw(shape);
+//        window.draw(shape2);
+//        window.display();
+//        sf::sleep(sf::milliseconds(10));
 //
-//		auto x = xy.x;
-//		auto y = xy.y;
+//        sf::Vector2f xy = shape.getPosition();
+//        std::cout << xy.x << ' ' << xy.y << std::endl;
 //
-//		if (y + speed_y >= 600 - 200 || y + speed_y <= 0)
-//		{
-//			speed_y *= -1;
-//		}
+//        auto x = xy.x;
+//        auto y = xy.y;
 //
-//		if (x + speed_x >= 800 - 200 || x + speed_x <= 0)
-//		{
-//			speed_x *= -1;
-//		}
+//        if (y + speed_y >= 600 - 200 || y + speed_y <= 0)
+//        {
+//            speed_y *= -1;
+//        }
 //
-//		sf::Vector2f xy2 = shape2.getPosition();
-//		std::cout << xy2.x << ' ' << xy2.y << std::endl;
+//        if (x + speed_x >= 800 - 200 || x + speed_x <= 0)
+//        {
+//            speed_x *= -1;
+//        }
 //
-//		auto x2 = xy2.x;
-//		auto y2 = xy2.y;
+//        sf::Vector2f xy2 = shape2.getPosition();
+//        std::cout << xy2.x << ' ' << xy2.y << std::endl;
 //
-//		if (y2 + speed_y2 >= 600 - 200 || y2 + speed_y2 <= 0)
-//		{
-//			speed_y2 *= -1;
-//		}
+//        auto x2 = xy2.x;
+//        auto y2 = xy2.y;
 //
-//		if (x2 + speed_x2 >= 800 - 200 || x2 + speed_x2 <= 0)
-//		{
-//			speed_x2 *= -1;
-//		}
+//        if (y2 + speed_y2 >= 600 - 200 || y2 + speed_y2 <= 0)
+//        {
+//            speed_y2 *= -1;
+//        }
 //
-//		shape.setPosition(sf::Vector2f(x + speed_x, y + speed_y));
-//		shape2.setPosition(sf::Vector2f(x2 + speed_x2, y2 + speed_y2));
-//	}
-//	
-//	return 0;
+//        if (x2 + speed_x2 >= 800 - 200 || x2 + speed_x2 <= 0)
+//        {
+//            speed_x2 *= -1;
+//        }
+//
+//        shape.setPosition(sf::Vector2f(x + speed_x, y + speed_y));
+//        shape2.setPosition(sf::Vector2f(x2 + speed_x2, y2 + speed_y2));
+//    }
+//
+//    return 0;
 //}
-
+//
