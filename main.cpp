@@ -1,10 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <cmath>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include <SFML/Graphics.hpp>
 
-static std::string path_brick_sprite = "briques.png";
+static std::string path_brick_sprite = "/Users/nikitaster/Xcode_Projects/Project Arkanoid/Project Arkanoid/briques.png";
 
 class Sprite{
 protected:
