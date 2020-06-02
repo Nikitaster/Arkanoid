@@ -1,3 +1,6 @@
+#pragma once
+
+#include "Puck.h"
 
 class PuckSupply: public Puck{
     std::vector<Puck> pucks;

@@ -1,6 +1,6 @@
 #include "Velocity.h"
 
-Velocity::Velocity(int direction = 90, int speed = 5)
+Velocity::Velocity(int direction, int speed)
 {
 	this->speed = speed;
 	this->setDirection(direction);

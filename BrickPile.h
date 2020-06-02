@@ -1,3 +1,7 @@
+#pragma once
+
+#include <vector>
+#include "Brick.h"
 
 class BrickPile{
 public:

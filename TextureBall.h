@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Texture.cpp"
 class TextureBall : public Texture
 {

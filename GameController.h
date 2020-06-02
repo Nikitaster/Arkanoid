@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GameModel.h"
+
 class GameController {
 	GameModel *model;
 public:

@@ -1,8 +1,7 @@
 #include "Brick.h"
 
 
-
-Brick::Brick()
+Brick::Brick(int x, int y, int width, int height):StationarySprite()
 {
 	sf::Texture texture;
 	texture.create(100, 50);

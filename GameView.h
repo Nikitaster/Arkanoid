@@ -1,5 +1,10 @@
 #pragma once
 
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include "GameModel.h"
+#include "GameController.h"
+
 class GameView {
 	GameModel *model;
 	GameController *controller;

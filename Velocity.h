@@ -1,6 +1,8 @@
 #pragma once
+
 #define _USE_MATH_DEFINES
 #include <math.h>
+
 class Velocity {
 	float speed_x;
 	float speed_y;

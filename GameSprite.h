@@ -1,10 +1,13 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
-class Sprite {
+
+class GameSprite {
 protected:
 	sf::Sprite sprite;
 public:
 	bool isDead;
-	Sprite();
+	GameSprite();
 	virtual sf::Sprite &get_sprite() = 0;
 };
 

@@ -16,4 +16,4 @@ bool  MovableSprite::isMoving()
 	return false;
 }
 
-void  MovableSprite::collideInto(Sprite &other) {};
+void  MovableSprite::collideInto(GameSprite &other) {};

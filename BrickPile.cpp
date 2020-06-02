@@ -10,8 +10,6 @@ void BrickPile::generate_objects(){
         for (int j = 0; j < 800; j+=100)
         {
              this->bricks.push_back(Brick(j, i, 100, 50));
-             this->texture.setRepeated(true);
-             this->texture.setSmooth(true);
         }
     }
 }

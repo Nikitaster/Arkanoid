@@ -1,7 +1,9 @@
-#include "Sprite.h"
-#include "Velocity.cpp"
+#pragma once
 
-class MovableSprite : public Sprite {
+#include "GameSprite.h"
+#include "Velocity.h"
+
+class MovableSprite : public GameSprite {
 public:
 	Velocity velocity;
 
@@ -11,5 +13,5 @@ public:
 
 	void move();
 	bool isMoving();
-	void collideInto(Sprite &other);
+	void collideInto(GameSprite &other);
 };
