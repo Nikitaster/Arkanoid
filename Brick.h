@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BRICK_H
+#define BRICK_H
 
 #include "StationarySprite.h"
 #include "TextureBrick.h"
@@ -9,3 +10,4 @@ public:
 	Brick(int x = 0, int y = 0, int width = 100, int height = 50);
 };
 
+#endif // BRICK_H

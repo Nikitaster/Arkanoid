@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BrickPile_H
+#define BrickPile_H
 
 #include <vector>
 #include "Brick.h"
@@ -12,3 +13,4 @@ public:
 	void generate_objects();
 };
 
+#endif // BrickPile_H

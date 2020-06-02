@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Puck_H
+#define Puck_H
 
 #include "MovableSprite.h"
 #include "TextureBall.h"
@@ -9,3 +10,5 @@ class Puck: public MovableSprite{
 public:
 	Puck();
 };
+
+#endif

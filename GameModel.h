@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GameModel_H
+#define GameModel_H
 
 #include "BrickPile.h"
 #include "Puddle.h"
@@ -11,3 +12,5 @@ public:
 	PuckSupply pucks;
 	GameModel() {}
 };
+
+#endif

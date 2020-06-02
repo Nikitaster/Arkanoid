@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GameView_H
+#define GameView_H
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -16,3 +17,5 @@ public:
 	void process_logic();
 	void process_events();
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Texture_H
+#define Texture_H
 
 #include <SFML/Graphics.hpp>
 class Texture
@@ -9,3 +10,5 @@ public:
 	Texture() {}
 	virtual sf::Texture &get_texture() = 0;
 };
+
+#endif

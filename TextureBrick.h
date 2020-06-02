@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TextureBrick_H
+#define TextureBrick_H
 
 #include "Texture.h"
 class TextureBrick : public Texture
@@ -8,3 +9,5 @@ public:
 	TextureBrick();
 	sf::Texture &get_texture() { return this->texture; }
 };
+
+#endif

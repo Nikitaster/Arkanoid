@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Velocity_H
+#define Velocity_H
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -21,4 +22,6 @@ public:
 	float & get_speedY() { return this->speed_y; }
 
 };
+
+#endif
 

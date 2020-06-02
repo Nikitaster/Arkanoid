@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TextureBall_H
+#define TextureBall_H
 
 #include "Texture.cpp"
 class TextureBall : public Texture
@@ -8,3 +9,5 @@ public:
 	TextureBall();
 	sf::Texture &get_texture() { return this->texture; }
 };
+
+#endif

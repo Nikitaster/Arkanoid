@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Puddle_H
+#define Puddle_H
 
 #include "MovableSprite.h"
 #include "TexturePuddle.h"
@@ -8,4 +9,6 @@ class Puddle: public MovableSprite{
 public:
 	Puddle();
 };
+
+#endif
 

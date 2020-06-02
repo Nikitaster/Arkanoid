@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GameController_H
+#define GameController_H
 
 #include "GameModel.h"
 
@@ -11,3 +12,5 @@ public:
 	void stop_puddle();
 	void move_puddle();
 };
+
+#endif // GameController_H

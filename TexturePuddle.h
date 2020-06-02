@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TexturePuddle_H
+#define TexturePuddle_H
 
 #include "Texture.h"
 class TexturePuddle : public Texture
@@ -8,4 +9,6 @@ public:
 	TexturePuddle();
 	sf::Texture &get_texture() { return this->texture; }
 };
+
+#endif
 

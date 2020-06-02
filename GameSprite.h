@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GameSprite_H
+#define GameSprite_H
 
 #include <SFML/Graphics.hpp>
 
@@ -10,4 +11,6 @@ public:
 	GameSprite();
 	virtual sf::Sprite &get_sprite() = 0;
 };
+
+#endif
 

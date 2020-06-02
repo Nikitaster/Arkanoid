@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MovableSprite_H
+#define MovableSprite_H
 
 #include "GameSprite.h"
 #include "Velocity.h"
@@ -15,3 +16,5 @@ public:
 	bool isMoving();
 	void collideInto(GameSprite &other);
 };
+
+#endif
