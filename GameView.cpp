@@ -4,22 +4,19 @@ GameView::GameView(GameModel &model, GameController &controller)
 {
 	this->model = &model;
 	this->controller = &controller;
-	this->window.create(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
-	this->window.setFramerateLimit(60);
 	this->model->puddle.velocity.get_speedX() = 0;
 }
 
-void GameView::run()
+void GameView::run(sf::RenderWindow &window)
 {
 	//       сделать меню
-	while (this->window.isOpen())
-	{
-		this->process_events();
-		this->process_logic();
-		//            controller logics
-		this->process_draw();
-		//            sf::sleep(sf::milliseconds(10));
-	}
+	
+	this->process_events(window);
+	this->process_logic();
+	//            controller logics
+	this->process_draw(window);
+	//            sf::sleep(sf::milliseconds(10));
+	
 }
 
 void GameView::process_logic()
@@ -28,13 +25,13 @@ void GameView::process_logic()
 	this->model->pucks.get_alive_puck().move();
 }
 
-void GameView::process_events()
+void GameView::process_events(sf::RenderWindow &window)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
-			this->window.close();
+			window.close();
 		if (event.text.unicode < 128)
 			std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
 		if (event.type == sf::Event::KeyPressed)
@@ -58,14 +55,14 @@ void GameView::process_events()
 	}
 }
 
-void GameView::process_draw()
+void GameView::process_draw(sf::RenderWindow &window)
 {
-	this->window.clear();
+	window.clear();
 	//        this->window.draw(shape);
 	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
-		this->window.draw(it->get_sprite());
+		window.draw(it->get_sprite());
 
-	this->window.draw(this->model->puddle.get_sprite());
+	window.draw(this->model->puddle.get_sprite());
 
 	//        убить м€ч
 	//        this->model->pucks.get_alive_puck().isDead = true;
@@ -73,7 +70,7 @@ void GameView::process_draw()
 	//        this->model->pucks.have_alive_puck()
 	//        gameover
 
-	this->window.draw(this->model->pucks.get_alive_puck().get_sprite());
+	window.draw(this->model->pucks.get_alive_puck().get_sprite());
 
-	this->window.display();
+	window.display();
 }
