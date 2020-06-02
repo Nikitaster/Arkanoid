@@ -33,7 +33,7 @@ void Puck::collideInto(GameSprite &other)
 {
 	if (Collision::PixelPerfectTest(this->get_sprite(), other.get_sprite()))
 	{
-		/*std::cout << "Direction " << this->velocity.getDirection() << std::endl;
+		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
 		std::cout << "COLLIDE" << std::endl;
 
 		auto puddleX = other.get_sprite().getPosition().x;
@@ -53,7 +53,6 @@ void Puck::collideInto(GameSprite &other)
 			{
 				this->velocity.reverse();
 			}
-			this->sprite.move(0, -1);
 		}
 		else if (puckX + 25 <= 300 + puddleX && puckX + 25.0 >= 300/3*2 + puddleX)
 		{
@@ -66,7 +65,6 @@ void Puck::collideInto(GameSprite &other)
 			{
 				this->velocity.setDirection(this->velocity.getDirection() - 70);
 			}
-			this->sprite.move(0, -1);
 		}
 		else
 		{
@@ -80,7 +78,6 @@ void Puck::collideInto(GameSprite &other)
 				this->velocity.setDirection(this->velocity.getDirection() - 90);
 			}
 			this->sprite.move(0, -1);
-		}*/
-		this->velocity.reverseY();
+		}
 	}
 };
