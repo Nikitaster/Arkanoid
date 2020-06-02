@@ -9,6 +9,8 @@ class Puck: public MovableSprite{
     static TextureBall texture;
 public:
 	Puck();
+	void move(int width = 800, int height = 600);
+	void collideInto(GameSprite &other);
 };
 
 #endif

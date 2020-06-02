@@ -10,19 +10,20 @@ GameView::GameView(GameModel &model, GameController &controller)
 void GameView::run(sf::RenderWindow &window)
 {
 	//       сделать меню
-	
 	this->process_events(window);
 	this->process_logic();
-	//            controller logics
 	this->process_draw(window);
-	//            sf::sleep(sf::milliseconds(10));
 	
 }
 
 void GameView::process_logic()
 {
 	this->controller->move_puddle();
-	this->model->pucks.get_alive_puck().move();
+	if (this->model->pucks.have_alive_puck())
+	{
+		this->model->pucks.get_alive_puck().move();
+		this->model->pucks.get_alive_puck().collideInto(this->model->puddle);
+	}
 }
 
 void GameView::process_events(sf::RenderWindow &window)
@@ -70,7 +71,10 @@ void GameView::process_draw(sf::RenderWindow &window)
 	//        this->model->pucks.have_alive_puck()
 	//        gameover
 
-	window.draw(this->model->pucks.get_alive_puck().get_sprite());
+	if (this->model->pucks.have_alive_puck())
+		window.draw(this->model->pucks.get_alive_puck().get_sprite());
+	else
+		std::cout << "GAME OVER!!!" << std::endl;
 
 	window.display();
 }

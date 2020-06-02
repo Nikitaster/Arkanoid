@@ -1,3 +1,5 @@
+#include <iostream>
+#include "Collision.h"
 #include "MovableSprite.h"
 
 MovableSprite::MovableSprite()
@@ -16,4 +18,10 @@ bool  MovableSprite::isMoving()
 	return false;
 }
 
-void  MovableSprite::collideInto(GameSprite &other) {};
+void  MovableSprite::collideInto(GameSprite &other) 
+{
+	if (Collision::PixelPerfectTest(this->get_sprite(), other.get_sprite()))
+	{
+		std::cout << "COLLIDE" << std::endl;
+	}
+};

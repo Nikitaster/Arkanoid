@@ -29,4 +29,5 @@ Puck & PuckSupply::get_alive_puck()
 		if (!it->isDead)
 			return *it;
 	}
+	return *this->pucks.begin();
 }
