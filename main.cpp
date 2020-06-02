@@ -7,55 +7,14 @@
 
 #include <SFML/Graphics.hpp>
 
-class Texture
-{
-protected:
-    sf::Texture texture;
-public:
-    Texture() {}
-    virtual sf::Texture &get_texture() = 0;
-};
-
-class TextureBall: public Texture
-{
-    std::string path = "50px-Floorball_ball.svg.png";
-public:
-    TextureBall() {this->texture.loadFromFile(this->path);}
-    sf::Texture &get_texture() {return this->texture;}
-};
-
-class TextureBrick: public Texture
-{
-    std::string path = "briques.png";
-public:
-    TextureBrick() {this->texture.loadFromFile(this->path, sf::IntRect(0, 0, 100, 50));}
-    sf::Texture &get_texture() {return this->texture;}
-};
-
-class TexturePuddle: public Texture
-{
-    std::string path = "briques.png";
-public:
-    TexturePuddle() {this->texture.loadFromFile(this->path, sf::IntRect(0, 0, 300, 50));}
-    sf::Texture &get_texture() {return this->texture;}
-};
-
-class Sprite{
-protected:
-    sf::Sprite sprite;
-public:
-    bool isDead;
-    Sprite(){
-        this->isDead = false;
-    }
-    virtual sf::Sprite &get_sprite() = 0;
-};
-
-class StationarySprite: public Sprite{
-public:
-    inline sf::Sprite &get_sprite() {return this->sprite;}
-};
-
+#include "Texture.cpp"	
+#include "TextureBall.cpp"
+#include "TextureBrick.cpp"
+#include "TexturePuddle.cpp"
+#include "Sprite.cpp"
+#include "StationarySprite.cpp"
+#include "MovableSprite.cpp"
+#include "Velocity.cpp"
 
 class Brick: public StationarySprite{
     static TextureBrick texture;
@@ -69,7 +28,6 @@ public:
 };
 
 TextureBrick Brick::texture = TextureBrick();
-
 
 class BrickPile{
 public:
@@ -91,58 +49,6 @@ public:
             }
         }
     }
-};
-
-
-class Velocity{
-    float speed_x;
-    float speed_y;
-    int speed;
-public:
-    Velocity(int direction = 90, int speed = 5)
-    {
-        this->speed = speed;
-        this->setDirection(direction);
-    }
-    void reverse(){
-        this->speed_x *= -1;
-        this->speed_y *= -1;
-    }
-    void reverseX(){
-        this->speed_x *= -1;
-    }
-    void reverseY(){
-        this->speed_y *= -1;
-    }
-    void setDirection(int d) {
-        this->speed_x = cos(d * M_PI/180) * (double)this->speed;
-        this->speed_y = sin(d * M_PI/180) * (double)this->speed;
-    }
-    
-    int getDirection() {
-        return ((int)(atan2(this->speed_y, this->speed_x) * 180/M_PI));
-    }
-    float & get_speedX() {return this->speed_x;}
-    float & get_speedY() {return this->speed_y;}
-    
-};
-
-class MovableSprite: public Sprite{
-public:
-    Velocity velocity;
-    MovableSprite() {velocity = Velocity();}
-    inline sf::Sprite &get_sprite() {return this->sprite;}
-    void move()
-    {
-        this->sprite.move(this->velocity.get_speedX(), this->velocity.get_speedY());
-    }
-    bool isMoving()
-    {
-        if (this->velocity.get_speedX() || this->velocity.get_speedY())
-            return true;
-        return false;
-    }
-    void collideInto(Sprite &other);
 };
 
 class Puddle: public MovableSprite{
@@ -401,4 +307,3 @@ int main()
 //
 //    return 0;
 //}
-//
