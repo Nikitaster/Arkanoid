@@ -1,11 +1,11 @@
 #pragma once
 
-class MainView {
-	MainModel *model;
-	MainController *controller;
+class GameView {
+	GameModel *model;
+	GameController *controller;
 	sf::RenderWindow window;
 public:
-	MainView(MainModel &model, MainController &controller);
+	GameView(GameModel &model, GameController &controller);
 	void run();
 	void process_draw();
 	void process_logic();

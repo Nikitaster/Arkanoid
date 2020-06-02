@@ -1,6 +1,6 @@
-#include "MainView.h"
+#include "GameView.h"
 
-MainView::MainView(MainModel &model, MainController &controller)
+GameView::GameView(GameModel &model, GameController &controller)
 {
 	this->model = &model;
 	this->controller = &controller;
@@ -9,7 +9,7 @@ MainView::MainView(MainModel &model, MainController &controller)
 	this->model->puddle.velocity.get_speedX() = 0;
 }
 
-void MainView::run()
+void GameView::run()
 {
 	//       сделать меню
 	while (this->window.isOpen())
@@ -22,13 +22,13 @@ void MainView::run()
 	}
 }
 
-void MainView::process_logic()
+void GameView::process_logic()
 {
 	this->controller->move_puddle();
 	this->model->pucks.get_alive_puck().move();
 }
 
-void MainView::process_events()
+void GameView::process_events()
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -58,25 +58,22 @@ void MainView::process_events()
 	}
 }
 
-void MainView::process_draw()
+void GameView::process_draw()
 {
-	void MainView::process_draw()
-	{
-		this->window.clear();
-		//        this->window.draw(shape);
-		for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
-			this->window.draw(it->get_sprite());
+	this->window.clear();
+	//        this->window.draw(shape);
+	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
+		this->window.draw(it->get_sprite());
 
-		this->window.draw(this->model->puddle.get_sprite());
+	this->window.draw(this->model->puddle.get_sprite());
 
-		//        убить мяч
-		//        this->model->pucks.get_alive_puck().isDead = true;
-		//        сделать проверку
-		//        this->model->pucks.have_alive_puck()
-		//        gameover
+	//        убить мяч
+	//        this->model->pucks.get_alive_puck().isDead = true;
+	//        сделать проверку
+	//        this->model->pucks.have_alive_puck()
+	//        gameover
 
-		this->window.draw(this->model->pucks.get_alive_puck().get_sprite());
+	this->window.draw(this->model->pucks.get_alive_puck().get_sprite());
 
-		this->window.display();
-	}
+	this->window.display();
 }
