@@ -9,13 +9,12 @@
 class GameView {
 	GameModel *model;
 	GameController *controller;
-	sf::RenderWindow window;
 public:
 	GameView(GameModel &model, GameController &controller);
-	void run();
-	void process_draw();
+	void run(sf::RenderWindow &window);
+	void process_draw(sf::RenderWindow &window);
 	void process_logic();
-	void process_events();
+	void process_events(sf::RenderWindow &window);
 };
 
 #endif
