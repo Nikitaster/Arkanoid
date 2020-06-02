@@ -3,6 +3,7 @@
 
 #include "GameSprite.h"
 #include "Velocity.h"
+#include "Collision.h"
 
 class MovableSprite : public GameSprite {
 public:
