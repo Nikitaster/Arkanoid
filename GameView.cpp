@@ -23,6 +23,11 @@ void GameView::process_logic()
 	{
 		this->model->pucks.get_alive_puck().move();
 		this->model->pucks.get_alive_puck().collideInto(this->model->puddle);
+        for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
+        {
+            if (!it->isDead)
+                this->model->pucks.get_alive_puck().collideInto(*it);
+        }
 	}
 }
 
@@ -61,7 +66,8 @@ void GameView::process_draw(sf::RenderWindow &window)
 	window.clear();
 	//        this->window.draw(shape);
 	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
-		window.draw(it->get_sprite());
+        if (!it->isDead)
+            window.draw(it->get_sprite());
 
 	window.draw(this->model->puddle.get_sprite());
 

@@ -29,14 +29,14 @@ void Puck::move(int width, int height)
 	this->sprite.move(this->velocity.get_speedX(), this->velocity.get_speedY());
 }
 
-void Puck::collideInto(GameSprite &other)
+void Puck::collideInto(Puddle &puddle)
 {
-	if (Collision::PixelPerfectTest(this->get_sprite(), other.get_sprite()))
+	if (Collision::PixelPerfectTest(this->get_sprite(), puddle.get_sprite()))
 	{
 		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
 		std::cout << "COLLIDE" << std::endl;
 
-		auto puddleX = other.get_sprite().getPosition().x;
+		auto puddleX = puddle.get_sprite().getPosition().x;
 		auto puckX = this->get_sprite().getPosition().x;
 
 		std::cout << "puddleX " << puddleX << ' ' << "puckX " << puckX << std::endl;
@@ -81,3 +81,12 @@ void Puck::collideInto(GameSprite &other)
 		}
 	}
 };
+
+void Puck::collideInto(Brick &brick)
+{
+    if (Collision::PixelPerfectTest(this->get_sprite(), brick.get_sprite()))
+    {
+        std::cout << "BRICK COLLIDE" << std::endl;
+        //    Реализует ее Величество принцесса Рязанская Мамонова Ксения Валентиновна! :D
+    }
+}

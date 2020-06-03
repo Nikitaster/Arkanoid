@@ -3,6 +3,8 @@
 
 #include "MovableSprite.h"
 #include "TextureBall.h"
+#include "Puddle.h"
+#include "Brick.h"
 
 class Puck: public MovableSprite{
 //    sf::Texture texture;
@@ -10,7 +12,8 @@ class Puck: public MovableSprite{
 public:
 	Puck();
 	void move(int width = 800, int height = 600);
-	void collideInto(GameSprite &other);
+	void collideInto(Puddle &puddle);
+    void collideInto(Brick &brick);
 };
 
 #endif
