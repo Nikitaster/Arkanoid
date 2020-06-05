@@ -51,7 +51,12 @@
 
 ### Подключение git:
 1. Перейти в проводнике в корень проекта (туда, где будут исполняемые файлы)
-2.  git init
-3.  git remote add origin https://gitlab.com/nikitaster/project-arkanoid
-4.  git branch --set-upstream-to=origin/master master
-5.  git pull origin master
+```Bash
+git init
+git config --global user.name "Firstname Lastname"
+git config --global user.email "email@mail.ru"
+git remote add origin https://gitlab.com/nikitaster/project-arkanoid
+git pull origin master
+git pull
+git checkout develop
+```
