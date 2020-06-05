@@ -1,6 +1,6 @@
 #include "GameView.h"
 
-class GameMenu {
+class MenuScene {
 	sf::Sprite menu;
 	bool is_menu = 1;
 	int button_num;
@@ -9,7 +9,7 @@ class GameMenu {
 	sf::Text button2;
 	sf::Text button3;
 public:
-	GameMenu() {
+	MenuScene() {
 		button1.setPosition(312, 123);
 		button2.setPosition(290, 183);
 		button3.setPosition(363, 243);
@@ -114,22 +114,22 @@ public:
 class MainView {
 	sf::RenderWindow window;
 	GameScene * game_scene;
-	GameMenu * game_menu;
+	MenuScene * menu_scene;
 public:
 	MainView()
 	{
 		this->window.create(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
 		this->window.setFramerateLimit(60);
 		game_scene = new GameScene();
-		game_menu = new GameMenu();
+		menu_scene = new MenuScene();
 	}
 
 	void run()
 	{
 		while (this->window.isOpen())
 		{
-			if (game_menu->get_menu_statement()) {
-				game_menu->run(this->window);
+			if (menu_scene->get_menu_statement()) {
+				menu_scene->run(this->window);
 			}
 			else {
 				game_scene->run(this->window);
