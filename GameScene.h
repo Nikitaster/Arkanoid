@@ -1,9 +1,10 @@
 #ifndef GameScene_H
 #define GameScene_H
 
+#include "BaseScene.h"
 #include "GameView.h"
 
-class GameScene {
+class GameScene : public BaseScene {
 	GameModel * game_model;
 	GameController * game_controller;
 	GameView * game_view;

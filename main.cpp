@@ -1,7 +1,8 @@
+#include "BaseScene.h"
 #include "GameScene.h"
 #include "GameOverScene.h"
 
-class MenuScene {
+class MenuScene: public BaseScene {
 	sf::Sprite menu;
 	bool is_menu = 1;
 	int button_num;

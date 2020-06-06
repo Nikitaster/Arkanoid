@@ -1,8 +1,8 @@
 #ifndef GameOverScene_H
 #define GameOverScene_H
 
-#include <SFML/Graphics.hpp>
-class GameOverScene {
+#include "BaseScene.h"
+class GameOverScene : public BaseScene {
 	sf::Sprite gameOver;
 	bool isActive = 1;
 	int button_num = 0;
