@@ -2,7 +2,7 @@
 #include <iostream>
 
 Puck::Puck(){
-	this->velocity = Velocity(45, 5);
+	this->velocity = Velocity(30, 8);
 	this->sprite.setTexture(texture.get_texture());
 	this->sprite.setPosition(800 / 2 - 20, 500 - 40 - 100);
 
@@ -97,8 +97,17 @@ void Puck::collideInto(Brick &brick)
         std::cout << "BRICK COLLIDE" << std::endl;
         //    Реализует ее Величество принцесса Рязанская Мамонова Ксения Валентиновна! :D
 		brick.hitBy();
+
+		if (this->sprite.getPosition().y + 25 < brick.get_sprite().getPosition().y ||
+			this->sprite.getPosition().y > brick.get_sprite().getPosition().y)
+		{
+			this->velocity.reverseY();
+		}
+		else {
 		this->velocity.reverseX();
+		}
     	std::cout << "NEW DIRECTION " << this->velocity.getDirection() << std::endl;
+
 	}
 
 }
