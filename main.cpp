@@ -23,7 +23,7 @@ public:
 		this->button_num = 0;
 
 		font_for_game.loadFromFile("font2.ttf");
-		font_for_buttons.loadFromFile("font3.ttf"); 
+		font_for_buttons.loadFromFile("font3.ttf");
 		menu_texture.loadFromFile("menu_background.png");
 
 		menu.setTexture(menu_texture);
@@ -126,6 +126,7 @@ public:
 		}
 	}
 };
+
 
 class GameScene {
 	GameModel * game_model;
