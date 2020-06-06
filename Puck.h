@@ -9,11 +9,15 @@
 class Puck: public MovableSprite{
 //    sf::Texture texture;
     static TextureBall texture;
+	int width = this->texture.get_texture().getSize().x;
+	int height = this->texture.get_texture().getSize().y;
 public:
 	Puck();
 	void move(int width = 800, int height = 600);
 	void collideInto(Puddle &puddle);
     void collideInto(Brick &brick);
+	int getWidth() { return this->width; }
+	int getHeight() { return this->height; }
 };
 
 #endif

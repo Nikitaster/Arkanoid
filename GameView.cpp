@@ -6,6 +6,7 @@ GameView::GameView(GameModel &model, GameController &controller)
 	this->model = &model;
 	this->controller = &controller;
 	this->model->puddle.velocity.get_speedX() = 0;
+	this->background = GameBackgroundSprite();
 }
 
 void GameView::run(sf::RenderWindow &window)
@@ -13,7 +14,6 @@ void GameView::run(sf::RenderWindow &window)
 	this->process_events(window);
 	this->process_logic();
 	this->process_draw(window);
-	
 }
 
 //int GameOver(sf::RenderWindow &window) {
@@ -86,6 +86,7 @@ void GameView::process_events(sf::RenderWindow &window)
 void GameView::process_draw(sf::RenderWindow &window)
 {
 	window.clear();
+	window.draw(this->background.get_sprite());
 	//        this->window.draw(shape);
 	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
 		if (!it->isDead)
