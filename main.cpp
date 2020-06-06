@@ -5,35 +5,42 @@ class MenuScene {
 	bool is_menu = 1;
 	int button_num;
 	sf::Texture menu_texture;
-	sf::Font font1;
-	sf::Font font2;
+	sf::Font font_for_game;
+	sf::Font font_for_buttons;
 	sf::Text game;
-	sf::Text button1;
-	sf::Text button2;
-	sf::Text button3;
+	sf::Text start_button;
+	sf::Text about_project_button;
+	sf::Text exit_button;
+
 public:
 	MenuScene() {
-		button1.setPosition(281, 123);
-		button2.setPosition(242, 183);
-		button3.setPosition(353, 243);
+		start_button.setPosition(281, 123);
+		about_project_button.setPosition(242, 183);
+		exit_button.setPosition(353, 243);
 		game.setPosition(245, 53);
+
 		this->is_menu = 1;
 		this->button_num = 0;
-		font1.loadFromFile("font2.ttf");
-		font2.loadFromFile("font3.ttf");
+
+		font_for_game.loadFromFile("font2.ttf");
+		font_for_buttons.loadFromFile("font3.ttf"); 
 		menu_texture.loadFromFile("menu_background.png");
+
 		menu.setTexture(menu_texture);
-		button1.setFont(font2);
-		button2.setFont(font2);
-		button3.setFont(font2);
-		game.setFont(font1);
+
+		start_button.setFont(font_for_buttons);
+		about_project_button.setFont(font_for_buttons);
+		exit_button.setFont(font_for_buttons);
+		game.setFont(font_for_game);
+
 		game.setCharacterSize(60);
-		button1.setCharacterSize(50);
-		button2.setCharacterSize(50);
-		button3.setCharacterSize(50);
-		button1.setString("start game");
-		button2.setString("about project");
-		button3.setString("exit");
+		start_button.setCharacterSize(50);
+		about_project_button.setCharacterSize(50);
+		exit_button.setCharacterSize(50);
+
+		start_button.setString("start game");
+		about_project_button.setString("about project");
+		exit_button.setString("exit");
 		game.setString("Arkanoid");
 	}
 
@@ -58,15 +65,15 @@ public:
 	void process_draw(sf::RenderWindow &window)
 	{
 		window.clear();
-		button1.setFillColor(sf::Color(61, 31, 115));
-		button2.setFillColor(sf::Color(61, 31, 115));
-		button3.setFillColor(sf::Color(61, 31, 115));
+		start_button.setFillColor(sf::Color(61, 31, 115));
+		about_project_button.setFillColor(sf::Color(61, 31, 115));
+		exit_button.setFillColor(sf::Color(61, 31, 115));
 		game.setFillColor(sf::Color(61, 31, 115));
 		this->menu_logic(window);
 		window.draw(menu);
-		window.draw(button1);
-		window.draw(button2);
-		window.draw(button3);
+		window.draw(start_button);
+		window.draw(about_project_button);
+		window.draw(exit_button);
 		window.draw(game);
 		window.display();
 	}
@@ -74,25 +81,34 @@ public:
 	void menu_logic(sf::RenderWindow &window) {
 		this->check_button_selected(window);
 		this->check_button_pressed(window);
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			window.close();*/
+		/*       escape
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		window.close();*/
 	}
 
 	void check_button_selected(sf::RenderWindow &window) {
 		if (sf::IntRect(281, 147, 238, 28).contains(sf::Mouse::getPosition(window))) {
-			this->button1.setFillColor(sf::Color::Blue);
+			this->start_button.setFillColor(sf::Color::Blue);
 			this->button_num = 1;
 		}
 		else if (sf::IntRect(242, 207, 316, 28).contains(sf::Mouse::getPosition(window))) {
-			this->button2.setFillColor(sf::Color::Blue);
+			this->about_project_button.setFillColor(sf::Color::Blue);
 			this->button_num = 2;
 		}
 		else if (sf::IntRect(353, 267, 94, 28).contains(sf::Mouse::getPosition(window))) {
-			this->button3.setFillColor(sf::Color::Blue);
+			this->exit_button.setFillColor(sf::Color::Blue);
 			this->button_num = 3;
 		}
 		else
 			this->button_num = 0;
+	}
+
+	void about_page(sf::RenderWindow &window) {
+		window.draw(menu);
+		window.draw(game);
+		//  about_project
+		window.display();
+		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape));
 	}
 
 	void check_button_pressed(sf::RenderWindow &window) {
@@ -100,7 +116,9 @@ public:
 		{
 			if (button_num == 1)
 				this->is_menu = false;
-			//if (button_num == 2);
+			if (button_num == 2) {
+				this->about_page(window);
+			}
 			if (button_num == 3) {
 				window.close();
 				this->is_menu = false;
