@@ -33,7 +33,6 @@ void Puck::collideInto(Puddle &puddle)
 {
 	if (Collision::PixelPerfectTest(this->get_sprite(), puddle.get_sprite()))
 	{
-		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
 		std::cout << "COLLIDE" << std::endl;
 
 		auto puddleX = puddle.get_sprite().getPosition().x;
@@ -45,9 +44,10 @@ void Puck::collideInto(Puddle &puddle)
 		if (puckX + 25 <= 300/3 + puddleX)
 		{
 			std::cout << "COLLIDE LEFT" << std::endl;
-			if (this->velocity.getDirection() > 90)
+			if (this->velocity.getDirection() >= 90)
 			{
-				this->velocity.setDirection(this->velocity.getDirection() + 90 - 70);
+				//this->velocity.setDirection(this->velocity.getDirection() + 90 - 70);
+				this->velocity.setDirection(-this->velocity.getDirection() - 20);
 			}
 			else if (this->velocity.getDirection() < 90)
 			{
@@ -61,9 +61,10 @@ void Puck::collideInto(Puddle &puddle)
 			{
 				this->velocity.reverse();
 			}
-			else if (this->velocity.getDirection() < 90)
+			else if (this->velocity.getDirection() <= 90)
 			{
-				this->velocity.setDirection(this->velocity.getDirection() - 70);
+				//this->velocity.setDirection(this->velocity.getDirection() - 70);
+				this->velocity.setDirection(-this->velocity.getDirection() + 20);
 			}
 		}
 		else
@@ -71,14 +72,20 @@ void Puck::collideInto(Puddle &puddle)
 			std::cout << "COLLIDE CENTER" << std::endl;
 			if (this->velocity.getDirection() > 90)
 			{
-				this->velocity.setDirection(this->velocity.getDirection() + 70);
+				//this->velocity.setDirection(this->velocity.getDirection() + 70);
+				this->velocity.setDirection(-this->velocity.getDirection() + 20);
 			}
 			else if (this->velocity.getDirection() < 90)
 			{
-				this->velocity.setDirection(this->velocity.getDirection() - 90);
+				//this->velocity.setDirection(this->velocity.getDirection() - 90);
+				this->velocity.setDirection(-this->velocity.getDirection() - 20);
+			}
+			else {
+				this->velocity.reverse();
 			}
 			this->sprite.move(0, -1);
 		}
+		std::cout << "NEW DIRECTION " << this->velocity.getDirection() << std::endl;
 	}
 };
 
@@ -86,7 +93,12 @@ void Puck::collideInto(Brick &brick)
 {
     if (Collision::PixelPerfectTest(this->get_sprite(), brick.get_sprite()))
     {
+		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
         std::cout << "BRICK COLLIDE" << std::endl;
         //    Реализует ее Величество принцесса Рязанская Мамонова Ксения Валентиновна! :D
-    }
+		brick.hitBy();
+		this->velocity.reverseX();
+    	std::cout << "NEW DIRECTION " << this->velocity.getDirection() << std::endl;
+	}
+
 }
