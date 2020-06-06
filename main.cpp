@@ -21,7 +21,7 @@ public:
 		this->button_num = 0;
 		font1.loadFromFile("font2.ttf");
 		font2.loadFromFile("font3.ttf");
-		menu_texture.loadFromFile("2.png");
+		menu_texture.loadFromFile("menu_background.png");
 		menu.setTexture(menu_texture);
 		button1.setFont(font2);
 		button2.setFont(font2);
@@ -377,7 +377,7 @@ public:
 				if (over_scene->getButton() == 1 && over_scene->getButtonStatus()) {
 					menu_scene = new MenuScene();
 				}
-				
+
 			}
 		}
 	}
