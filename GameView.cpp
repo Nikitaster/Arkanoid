@@ -10,7 +10,6 @@ GameView::GameView(GameModel &model, GameController &controller)
 
 void GameView::run(sf::RenderWindow &window)
 {
-	//       сделать меню
 	this->process_events(window);
 	this->process_logic();
 	this->process_draw(window);
@@ -70,6 +69,11 @@ void GameView::process_events(sf::RenderWindow &window)
 				std::cout << "Move RIGHT" << std::endl;
 				this->controller->move_puddle_right();
 			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				std::cout << "PAUSE" << std::endl;
+				this->onPause = true;
+			}
 		}
 		if (event.type == sf::Event::KeyReleased) {
 			if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right ||
@@ -99,7 +103,7 @@ void GameView::process_draw(sf::RenderWindow &window)
 		window.draw(this->model->pucks.get_alive_puck().get_sprite());
 	else {
 		window.clear();
-		model->end_code = 0;
+		this->isGameOver = true;
 		//GameOver(window);
 	}
 

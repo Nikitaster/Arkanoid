@@ -10,6 +10,8 @@ class GameView {
 	GameModel *model;
 	GameController *controller;
 public:
+	bool onPause = false;
+	bool isGameOver = false;
 	GameView(GameModel &model, GameController &controller);
 	void run(sf::RenderWindow &window);
 	void process_draw(sf::RenderWindow &window);

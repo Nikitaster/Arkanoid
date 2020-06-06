@@ -37,7 +37,7 @@ public:
 		game.setString("Arkanoid");
 	}
 
-	inline bool get_menu_statement() { return is_menu; };
+	inline bool & get_menu_statement() { return is_menu; };
 
 	void run(sf::RenderWindow &window)
 	{
@@ -120,7 +120,9 @@ public:
 		game_view = new GameView(*game_model, *game_controller);
 	}
 
-	int get_end_code() { return game_model->end_code; };
+	inline bool & onPause() { return this->game_view->onPause; }
+	inline bool & isGameOver() { return this->game_view->isGameOver; }
+
 	/*void setNewGame() { 
 		game_model->end_code = -1; 
 		game_model = new GameModel();
@@ -363,21 +365,30 @@ public:
 	{
 		while (this->window.isOpen())
 		{
-			if (menu_scene->get_menu_statement()) {
-				menu_scene->run(this->window);
-				if (game_scene->get_end_code() != -1 && menu_scene->get_menu_statement()) {
-					game_scene = new GameScene();
-				}
+			if (game_scene->onPause())
+			{
+				// сделать для паузы сцену, как меню, только с кнопкой продолжить и анчать новую
 			}
-			else if (game_scene->get_end_code() == -1) {
-				game_scene->run(this->window);
-			}
-			else if (game_scene->get_end_code() == 0) {
-				over_scene->run(this->window);
-				if (over_scene->getButton() == 1 && over_scene->getButtonStatus()) {
-					menu_scene = new MenuScene();
+
+			else
+			{
+				if (menu_scene->get_menu_statement())
+					menu_scene->run(this->window);
+
+				else if (game_scene->isGameOver())
+				{
+					over_scene->run(this->window);
+					if (over_scene->getButton() == 1 && over_scene->getButtonStatus())
+					{
+						delete this->game_scene;
+						delete this->menu_scene;
+						this->game_scene = new GameScene();
+						this->menu_scene = new MenuScene();
+					}
 				}
 
+				else
+					game_scene->run(this->window);
 			}
 		}
 	}
