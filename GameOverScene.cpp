@@ -78,11 +78,9 @@ void GameOverScene::check_button_pressed(sf::RenderWindow & window) {
 	{
 		this->button_pressed = true;
 		if (button_num == 1) {
-			this->isActive = false;
 		}
 		if (button_num == 2) {
 			window.close();
-			this->isActive = false;
 		}
 	}
 }
