@@ -1,5 +1,6 @@
 #include "GameView.h"
 
+
 GameView::GameView(GameModel &model, GameController &controller)
 {
 	this->model = &model;
@@ -15,6 +16,23 @@ void GameView::run(sf::RenderWindow &window)
 	this->process_draw(window);
 	
 }
+
+//int GameOver(sf::RenderWindow &window) {
+//	sf::Text gameOver;
+//	sf::Font font;
+//	if (!font.loadFromFile("font2.ttf")) {
+//		return -1;
+//	}
+//	gameOver.setFont(font);
+//	gameOver.setString("Game over!");
+//	gameOver.setCharacterSize(36);
+//	gameOver.setFillColor(sf::Color::Red);
+//	//gameOver.setStyle(sf::Text::Bold);
+//	gameOver.setPosition(290, 150);
+//	window.draw(gameOver);
+//	std::cout << "GAME OVER!!!" << std::endl;
+//	return 0;
+//};
 
 void GameView::process_logic()
 {
@@ -66,8 +84,8 @@ void GameView::process_draw(sf::RenderWindow &window)
 	window.clear();
 	//        this->window.draw(shape);
 	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
-        if (!it->isDead)
-            window.draw(it->get_sprite());
+		if (!it->isDead)
+			window.draw(it->get_sprite());
 
 	window.draw(this->model->puddle.get_sprite());
 
@@ -79,8 +97,14 @@ void GameView::process_draw(sf::RenderWindow &window)
 
 	if (this->model->pucks.have_alive_puck())
 		window.draw(this->model->pucks.get_alive_puck().get_sprite());
-	else
-		std::cout << "GAME OVER!!!" << std::endl;
+	else {
+		window.clear();
+		model->end_code = 0;
+		//GameOver(window);
+	}
+
+	//	сюда пропишите убийство кирпичей
+	//	вставим сюда отрисовку окна победы
 
 	window.display();
 }

@@ -10,6 +10,7 @@ public:
 	BrickPile bricks;
 	Puddle puddle;
 	PuckSupply pucks;
+	int end_code = -1; 
 	GameModel() {}
 };
 
