@@ -5,10 +5,13 @@
 #include <SFML/Graphics.hpp>
 #include "GameModel.h"
 #include "GameController.h"
+#include "GameBackgroundSprite.h"
 
 class GameView {
 	GameModel *model;
 	GameController *controller;
+	sf::Sprite background_sprite;
+	GameBackgroundSprite background;
 public:
 	bool onPause = false;
 	bool isGameOver = false;
