@@ -1,5 +1,114 @@
 #include "GameView.h"
 
+class MenuScene {
+	sf::Sprite menu;
+	bool is_menu = 1;
+	int button_num;
+	sf::Texture menu_texture;
+	sf::Font font1;
+	sf::Font font2;
+	sf::Text game;
+	sf::Text button1;
+	sf::Text button2;
+	sf::Text button3;
+public:
+	MenuScene() {
+		button1.setPosition(281, 123);
+		button2.setPosition(242, 183);
+		button3.setPosition(353, 243);
+		game.setPosition(245, 53);
+		this->is_menu = 1;
+		this->button_num = 0;
+		font1.loadFromFile("font2.ttf");
+		font2.loadFromFile("font3.ttf");
+		menu_texture.loadFromFile("ÔÎÍ2.png");
+		menu.setTexture(menu_texture);
+		button1.setFont(font2);
+		button2.setFont(font2);
+		button3.setFont(font2);
+		game.setFont(font1);
+		game.setCharacterSize(60);
+		button1.setCharacterSize(50);
+		button2.setCharacterSize(50);
+		button3.setCharacterSize(50);
+		button1.setString("start game");
+		button2.setString("about project");
+		button3.setString("exit");
+		game.setString("Arkanoid");
+	}
+
+	inline bool get_menu_statement() { return is_menu; };
+
+	void run(sf::RenderWindow &window)
+	{
+		this->process_draw(window);
+		this->process_events(window);
+	}
+
+	void process_events(sf::RenderWindow &window)
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+	}
+
+	void process_draw(sf::RenderWindow &window)
+	{
+		window.clear();
+		button1.setFillColor(sf::Color(61, 31, 115));
+		button2.setFillColor(sf::Color(61, 31, 115));
+		button3.setFillColor(sf::Color(61, 31, 115));
+		game.setFillColor(sf::Color(61, 31, 115));
+		this->menu_logic(window);
+		window.draw(menu);
+		window.draw(button1);
+		window.draw(button2);
+		window.draw(button3);
+		window.draw(game);
+		window.display();
+	}
+
+	void menu_logic(sf::RenderWindow &window) {
+		this->check_button_selected(window);
+		this->check_button_pressed(window);
+		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			window.close();*/
+	}
+
+	void check_button_selected(sf::RenderWindow &window) {
+		if (sf::IntRect(281, 147, 238, 28).contains(sf::Mouse::getPosition(window))) {
+			this->button1.setFillColor(sf::Color::Blue);
+			this->button_num = 1;
+		}
+		else if (sf::IntRect(242, 207, 316, 28).contains(sf::Mouse::getPosition(window))) {
+			this->button2.setFillColor(sf::Color::Blue);
+			this->button_num = 2;
+		}
+		else if (sf::IntRect(353, 267, 94, 28).contains(sf::Mouse::getPosition(window))) {
+			this->button3.setFillColor(sf::Color::Blue);
+			this->button_num = 3;
+		}
+		else
+			this->button_num = 0;
+	}
+
+	void check_button_pressed(sf::RenderWindow &window) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (button_num == 1)
+				this->is_menu = false;
+			//if (button_num == 2);
+			if (button_num == 3) {
+				window.close();
+				this->is_menu = false;
+			}
+		}
+	}
+};
+
 class GameScene{
 	GameModel * game_model;
 	GameController * game_controller;
@@ -21,19 +130,26 @@ public:
 class MainView {
 	sf::RenderWindow window;
 	GameScene * game_scene;
+	MenuScene * menu_scene;
 public:
 	MainView()
 	{
 		this->window.create(sf::VideoMode(800, 600), "Arkanoid!", sf::Style::Close);
 		this->window.setFramerateLimit(60);
 		game_scene = new GameScene();
+		menu_scene = new MenuScene();
 	}
 
 	void run()
 	{
 		while (this->window.isOpen())
 		{
-			game_scene->run(this->window);
+			if (menu_scene->get_menu_statement()) {
+				menu_scene->run(this->window);
+			}
+			else {
+				game_scene->run(this->window);
+			}
 		}
 	}
 };
