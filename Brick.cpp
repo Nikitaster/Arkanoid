@@ -11,6 +11,10 @@ Brick::Brick(int x, int y, int width, int height):StationarySprite()
 
 TextureBrick Brick::texture = TextureBrick();
 
+void Brick::hitBy() {
+	this->isDead = true;
+}
+
 //
 //Brick::~Brick()
 //{
