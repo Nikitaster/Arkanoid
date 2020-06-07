@@ -387,7 +387,9 @@ public:
 
 		runners = { {"menu", std::bind(&MainView::show_menu, this)},
 					{"game", std::bind(&MainView::show_game, this)},
-					{"pause", std::bind(&MainView::show_pause, this)} };
+					{ "pause", std::bind(&MainView::show_pause, this) },
+					{ "gameOver", std::bind(&MainView::show_game_over, this) }, 
+		};
 		current_runner = "menu";
 	}
 
@@ -404,6 +406,11 @@ public:
 	void show_pause()
 	{
 		pause_scene->run(this->window);
+	}
+
+	void show_game_over()
+	{
+		over_scene->run(this->window);
 	}
 
 	void reset_game_scene()
@@ -425,6 +432,8 @@ public:
 			{
 				if (game_scene->onPause())
 					current_runner = "pause";
+				if (game_scene->isGameOver())
+					current_runner = "gameOver";
 			}
 			if (current_runner == "pause")
 			{
@@ -446,6 +455,17 @@ public:
 					sf::sleep(sf::milliseconds(100));
 				}
 			}
+			if (current_runner == "gameOver")
+			{
+				if (over_scene->getButton() == 1 && over_scene->getButtonStatus())
+				{
+					reset_game_scene();
+					current_runner = "menu"; 
+					menu_scene->get_menu_statement() = true;
+					sf::sleep(sf::milliseconds(100));
+				}
+			}
+
 			runners[current_runner]();
 		}
 		window.close();
@@ -455,7 +475,6 @@ public:
 
 int main()
 {
-
 	MainView().run();
 	return 0;
 }
