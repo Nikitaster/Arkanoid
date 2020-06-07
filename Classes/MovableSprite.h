@@ -1,11 +1,11 @@
 #ifndef MovableSprite_H
 #define MovableSprite_H
 
-#include "GameSprite.h"
+#include "BaseSprite.h"
 #include "Velocity.h"
 #include "Collision.h"
 
-class MovableSprite : public GameSprite {
+class MovableSprite : public BaseSprite {
 public:
 	Velocity velocity;
 
@@ -15,7 +15,7 @@ public:
 
 	void move();
 	bool isMoving();
-	void collideInto(GameSprite &other);
+	void collideInto(BaseSprite &other);
 };
 
 #endif

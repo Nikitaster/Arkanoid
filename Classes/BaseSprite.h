@@ -1,14 +1,14 @@
-#ifndef GameSprite_H
-#define GameSprite_H
+#ifndef BaseSprite_H
+#define BaseSprite_H
 
 #include <SFML/Graphics.hpp>
 
-class GameSprite {
+class BaseSprite {
 protected:
 	sf::Sprite sprite;
 public:
 	bool isDead;
-	GameSprite();
+	BaseSprite();
 	virtual sf::Sprite &get_sprite() = 0;
 };
 

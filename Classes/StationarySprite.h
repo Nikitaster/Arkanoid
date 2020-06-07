@@ -1,9 +1,9 @@
 #ifndef StationarySprite_H
 #define StationarySprite_H
 
-#include "GameSprite.h"
+#include "BaseSprite.h"
 
-class StationarySprite : public GameSprite {
+class StationarySprite : public BaseSprite {
 public:
 	inline sf::Sprite &get_sprite() { return this->sprite; }
 };

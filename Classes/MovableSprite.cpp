@@ -18,7 +18,7 @@ bool  MovableSprite::isMoving()
 	return false;
 }
 
-void  MovableSprite::collideInto(GameSprite &other) 
+void  MovableSprite::collideInto(BaseSprite &other)
 {
 	if (Collision::PixelPerfectTest(this->get_sprite(), other.get_sprite()))
 	{
