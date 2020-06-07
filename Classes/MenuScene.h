@@ -6,10 +6,16 @@
 class MenuScene : public BaseScene {
 	sf::Sprite menu;
 	sf::Sprite about_page;
+	sf::Sprite controllers_wasd;
+	sf::Sprite controllers_arrows;
+	sf::Sprite controllers_explanation;
 	bool is_menu = 1;
 	int button_num;
 	sf::Texture menu_texture;
 	sf::Texture about_texture;
+	sf::Texture controllers_wasd_texture;
+	sf::Texture controllers_arrows_texture;
+	sf::Texture controllers_explanation_texture;
 	sf::Font font_for_game;
 	sf::Font font_for_buttons;
 	sf::Text game;
@@ -28,6 +34,9 @@ public:
 		about_page.setPosition(60, 138);
 		controllers_button.setPosition(264, 243);
 		back_to_menu.setPosition(248, 512);
+		controllers_wasd.setPosition(210, 259);
+		controllers_arrows.setPosition(462, 259);
+		controllers_explanation.setPosition(153, 180);
 
 		this->is_menu = 1;
 		this->button_num = 0;
@@ -36,9 +45,15 @@ public:
 		font_for_buttons.loadFromFile("font3.ttf");
 		menu_texture.loadFromFile("menu_background.png");
 		about_texture.loadFromFile("about_page.png");
+		controllers_arrows_texture.loadFromFile("move_puddle2.png");
+		controllers_explanation_texture.loadFromFile("controllers_explanation.png");
+		controllers_wasd_texture.loadFromFile("move_puddle1.png");
 
 		menu.setTexture(menu_texture);
 		about_page.setTexture(about_texture);
+		controllers_arrows.setTexture(controllers_arrows_texture);
+		controllers_wasd.setTexture(controllers_wasd_texture);
+		controllers_explanation.setTexture(controllers_explanation_texture);
 
 		start_button.setFont(font_for_buttons);
 		about_project_button.setFont(font_for_buttons);
@@ -139,6 +154,9 @@ public:
 	void controllers_page_scene(sf::RenderWindow &window) {
 		window.draw(menu);
 		window.draw(game);
+		window.draw(controllers_explanation);
+		window.draw(controllers_wasd);
+		window.draw(controllers_arrows);
 		window.draw(back_to_menu);
 		window.display();
 		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape));
