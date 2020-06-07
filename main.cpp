@@ -2,7 +2,11 @@
 #include "GameScene.h"
 #include "GameOverScene.h"
 
-class MenuScene: public BaseScene {
+#include <string>
+#include <map>
+#include <functional>
+
+class MenuScene : public BaseScene {
 	sf::Sprite menu;
 	bool is_menu = 1;
 	int button_num;
@@ -122,16 +126,17 @@ public:
 				this->about_page(window);
 			}
 			if (button_num == 3) {
-				window.close();
 				this->is_menu = false;
+				window.close();
 			}
 		}
+		button_num = 0;
 	}
 
 };
 
 
-class PauseScene {
+class PauseScene : public BaseScene {
 	sf::Sprite pause;
 	bool is_pause = 1;
 	int button_num;
@@ -175,6 +180,7 @@ public:
 	}
 
 	inline bool & get_pause_statement() { return is_pause; };
+	inline const int & get_button() { return this->button_num; };
 
 	void run(sf::RenderWindow &window)
 	{
@@ -230,11 +236,12 @@ public:
 			this->button_num = 0;
 	}
 
-	void check_button_pressed(sf::RenderWindow &window) {
+	int check_button_pressed(sf::RenderWindow &window) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			//тут должна быть обработка событий кнопок
+			return this->button_num;
 		}
+		return 0;
 	}
 };
 
@@ -342,12 +349,30 @@ public:
 	}
 };*/
 
+//typedef int(*IntFunctionWithOneParameter) (int a);
+//
+//int function(int a) { return a; }
+//int functionTimesTwo(int a) { return a * 2; }
+//int functionDivideByTwo(int a) { return a / 2; }
+//
+//void main()
+//{
+//	//map<string, int(*)(int a)> dict;
+//	map<string, IntFunctionWithOneParameter> dict;
+//
+//	dict["first"] = function;
+//	dict["second"] = functionTimesTwo;
+//
+//	cout << dict["second"](10) << endl;
+
 class MainView {
 	sf::RenderWindow window;
 	GameScene * game_scene;
 	MenuScene * menu_scene;
 	GameOverScene * over_scene;
 	PauseScene * pause_scene;
+	std::map<std::string, std::function<void()> > runners;
+	std::string current_runner;
 	//GameWinScene * win_scene;
 public:
 	MainView()
@@ -359,44 +384,78 @@ public:
 		over_scene = new GameOverScene();
 		pause_scene = new PauseScene();
 		//win_scene = new GameWinScene();
+
+		runners = { {"menu", std::bind(&MainView::show_menu, this)},
+					{"game", std::bind(&MainView::show_game, this)},
+					{"pause", std::bind(&MainView::show_pause, this)} };
+		current_runner = "menu";
+	}
+
+	void show_menu()
+	{
+		menu_scene->run(this->window);
+	}
+
+	void show_game()
+	{
+		game_scene->run(this->window);
+	}
+
+	void show_pause()
+	{
+		pause_scene->run(this->window);
+	}
+
+	void reset_game_scene()
+	{
+		delete this->game_scene;
+		this->game_scene = new GameScene();
 	}
 
 	void run()
 	{
 		while (this->window.isOpen())
 		{
-			if (game_scene->onPause())
+			if (current_runner == "menu")
 			{
-				pause_scene->run(this->window);
+				if (!menu_scene->get_menu_statement())
+					current_runner = "game";
 			}
-
-			else
+			if (current_runner == "game")
 			{
-				if (menu_scene->get_menu_statement())
-					menu_scene->run(this->window);
-
-				else if (game_scene->isGameOver())
+				if (game_scene->onPause())
+					current_runner = "pause";
+			}
+			if (current_runner == "pause")
+			{
+				if (pause_scene->check_button_pressed(this->window) == 1)
 				{
-					over_scene->run(this->window);
-					if (over_scene->getButton() == 1 && over_scene->getButtonStatus())
-					{
-						delete this->game_scene;
-						delete this->menu_scene;
-						this->game_scene = new GameScene();
-						this->menu_scene = new MenuScene();
-					}
+					game_scene->onPause() = false;
+					current_runner = "game";
 				}
-
-				else
-					game_scene->run(this->window);
+				else if (pause_scene->check_button_pressed(this->window) == 2)
+				{
+					reset_game_scene();
+					current_runner = "game";
+				}
+				else if (pause_scene->check_button_pressed(this->window) == 3)
+				{
+					menu_scene->get_menu_statement() = true;
+					reset_game_scene();
+					current_runner = "menu";
+					sf::sleep(sf::milliseconds(100));
+				}
 			}
+			runners[current_runner]();
 		}
+		window.close();
 	}
 };
 
 
 int main()
 {
+
 	MainView().run();
 	return 0;
 }
