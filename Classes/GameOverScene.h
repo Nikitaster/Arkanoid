@@ -17,8 +17,8 @@ public:
 	GameOverScene();
 
 	inline bool getStatement() { return isActive; };
-	inline int getButton() { return button_num; };
-	inline bool getButtonStatus() { return button_pressed; };
+	inline int & getButton() { return button_num; };
+	inline bool & getButtonStatus() { return button_pressed; };
 
 	void run(sf::RenderWindow &window);
 
