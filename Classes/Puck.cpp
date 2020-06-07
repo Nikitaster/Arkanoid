@@ -2,7 +2,7 @@
 #include <iostream>
 
 Puck::Puck(){
-	this->velocity = Velocity(80, 8);
+	this->velocity = Velocity(90, 8);
 	this->sprite.setTexture(texture.get_texture());
 	this->sprite.setPosition(800 / 2 - 20, 500 - 40 - 100);
 }
@@ -16,13 +16,17 @@ void Puck::move(int width, int height)
 	{
 		this->velocity.reverseX();
 	}
-	if (this->sprite.getPosition().y + this->velocity.get_speedY() <= 0)
+	if (this->sprite.getPosition().y + this->velocity.get_speedY() <= 30)
 	{
 		this->velocity.reverseY();
 	}
 	if (this->sprite.getPosition().y + this->velocity.get_speedY() - this->sprite.getTextureRect().height/2 >= height)
 	{
 		this->isDead = true;
+	}
+	if (abs(this->velocity.getDirection()) == 180 || abs(this->velocity.getDirection()) == 360) 
+	{
+		this->velocity.setDirection(this->velocity.getDirection() + 10);
 	}
 	
 	this->sprite.move(this->velocity.get_speedX(), this->velocity.get_speedY());
@@ -40,27 +44,19 @@ void Puck::collideInto(Puddle &puddle)
 		auto puddleY = puddle.get_sprite().getPosition().y;
 		auto puckY = this->get_sprite().getPosition().y;
 
-		//auto puddleWidth = puddle.getWidth();
-		//auto puddleHeight = puddle.getHeight();
-
-		//auto puckWidth = this->getWidth();
-		//auto puckHeight = this->getHeight();
-
 		std::cout << "puddleX " << puddleX << ' ' << "puckX " << puckX << std::endl;
 		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
 
-		//if (puckX + this->getWidth()/2 > puddleX || puckX < puddleX + puddle.getWidth()) 
 		if (puckY + this->getHeight() / 2 < puddleY)
 		{
-			this->get_sprite().setPosition(puckX, puddleY - 50);
-			//if (puckX + 50 <= 300/3 + puddleX)
+			this->get_sprite().setPosition(puckX, puddleY - this->getHeight());
+
 			if (puckX + this->getWidth() <= puddle.getWidth() / 3 + puddleX)
 			{
 				std::cout << "COLLIDE LEFT" << std::endl;
 
 				if (this->velocity.getDirection() >= 90)
 				{
-					//this->velocity.setDirection(this->velocity.getDirection() + 90 - 70);
 					this->velocity.setDirection(-this->velocity.getDirection() - 20);
 					//this->velocity.setDirection(-this->velocity.getDirection() - this->velocity.getDirection()/2);
 				}
@@ -69,7 +65,6 @@ void Puck::collideInto(Puddle &puddle)
 					this->velocity.reverse();
 				}
 			}
-			//else if (puckX <= 300 + puddleX && puckX >= 300/3*2 + puddleX)
 			else if (puckX <= puddle.getWidth() + puddleX && puckX >= puddle.getWidth() / 3 * 2 + puddleX)
 			{
 				std::cout << "COLLIDE RIGHT" << std::endl;
@@ -79,7 +74,6 @@ void Puck::collideInto(Puddle &puddle)
 				}
 				else if (this->velocity.getDirection() <= 90)
 				{
-					//this->velocity.setDirection(this->velocity.getDirection() - 70);
 					this->velocity.setDirection(-this->velocity.getDirection() + 20);
 					//this->velocity.setDirection(-this->velocity.getDirection() + this->velocity.getDirection() / 2);
 				}
@@ -89,23 +83,18 @@ void Puck::collideInto(Puddle &puddle)
 				std::cout << "COLLIDE CENTER" << std::endl;
 				if (this->velocity.getDirection() > 90)
 				{
-					//this->velocity.setDirection(this->velocity.getDirection() + 70);
 					this->velocity.setDirection(-this->velocity.getDirection() + 20);
 					//this->velocity.setDirection(-this->velocity.getDirection() + this->velocity.getDirection() / 2);
 				}
 				else if (this->velocity.getDirection() < 90)
 				{
-					//this->velocity.setDirection(this->velocity.getDirection() - 90);
 					this->velocity.setDirection(-this->velocity.getDirection() - 20);
 					//this->velocity.setDirection(-this->velocity.getDirection() - this->velocity.getDirection() / 2);
 				}
 				else {
 					this->velocity.reverse();
 				}
-				//this->sprite.move(0, -1);
 			}
-
-			//this->velocity.reverseY();
 		}
 		else {
 			std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;

@@ -95,7 +95,7 @@ void MainView::run()
 				reset_game_scene();
 				current_runner = "menu";
 				menu_scene->get_menu_statement() = true;
-				over_scene->getButton() == 0;
+				over_scene->getButton() = 0;
 				over_scene->getButtonStatus() = false;
 				sf::sleep(sf::milliseconds(100));
 			}
