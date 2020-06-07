@@ -139,6 +139,14 @@ public:
 		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape));
 	}
 
+	void controllers_page_scene(sf::RenderWindow &window) {
+		window.draw(menu);
+		window.draw(game);
+		window.draw(back_to_menu);
+		window.display();
+		while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Escape));
+	}
+
 	void check_button_pressed(sf::RenderWindow &window) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
@@ -148,7 +156,7 @@ public:
 				this->about_page_scene(window);
 			}
 			if (button_num == 3) {
-				//this->about_page_scene(window);
+				this->controllers_page_scene(window);
 			}
 			if (button_num == 4) {
 				this->is_menu = false;
