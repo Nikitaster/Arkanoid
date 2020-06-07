@@ -10,6 +10,12 @@ class GameScene : public BaseScene {
 	GameView * game_view;
 public:
 	GameScene();
+	~GameScene()
+	{
+		delete game_view;
+		delete game_controller;
+		delete game_model;
+	}
 
 	inline bool & onPause() { return this->game_view->onPause; }
 	inline bool & isGameOver() { return this->game_view->isGameOver; }

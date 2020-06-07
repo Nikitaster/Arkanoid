@@ -426,6 +426,14 @@ public:
 		current_runner = "menu";
 	}
 
+	~MainView()
+	{
+		delete game_scene;
+		delete menu_scene;
+		delete over_scene;
+		delete pause_scene;
+	}
+
 	void show_menu()
 	{
 		menu_scene->run(this->window);
