@@ -1,4 +1,5 @@
-#include "MainScene.h"
+#include "Classes/MainView.h"
+
 
 int main()
 {
