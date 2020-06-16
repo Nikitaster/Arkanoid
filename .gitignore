@@ -1,5 +1,7 @@
 *.vcxproj
 *.vcxproj.filters
+*.sln
+sfml/
 
 # Created by https://www.gitignore.io/api/qt,c++,xcode,linux,macos,clion,android,windows,qtcreator,codeblocks,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=qt,c++,xcode,linux,macos,clion,android,windows,qtcreator,codeblocks,visualstudio,visualstudiocode

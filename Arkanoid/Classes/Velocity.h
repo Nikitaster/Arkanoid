@@ -7,9 +7,9 @@
 class Velocity {
 	float speed_x;
 	float speed_y;
-	int speed;
+	float speed;
 public:
-	Velocity(int direction = 90, int speed = 5);
+	Velocity(int direction = 90, float speed = 5);
 
 	void reverse();
 	void reverseX();
@@ -18,8 +18,8 @@ public:
 	void setDirection(int d);
 	int getDirection();
 
-	float & get_speedX() { return this->speed_x; }
-	float & get_speedY() { return this->speed_y; }
+	float& get_speedX() { return this->speed_x; }
+	float& get_speedY() { return this->speed_y; }
 
 };
 
