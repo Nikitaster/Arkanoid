@@ -3,8 +3,7 @@
 
 using namespace Catch::Matchers;
 
-SCENARIO("Velocity has default constructor", "[velocity]") {
-
+SCENARIO("Velocity", "[velocity]") {
     GIVEN("Velocity object with default params") {
         Velocity velocity;
         REQUIRE(velocity.getDirection() == 90);
