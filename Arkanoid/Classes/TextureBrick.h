@@ -4,7 +4,7 @@
 #include "Texture.h"
 class TextureBrick : public Texture
 {
-	std::string path = "Arkanoid\\blockYe.png";
+	std::string path = "blockYe.png";
 public:
 	TextureBrick();
 	sf::Texture &get_texture() { return this->texture; }

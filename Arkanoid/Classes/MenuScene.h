@@ -41,13 +41,13 @@ public:
 		this->is_menu = 1;
 		this->button_num = 0;
 
-		font_for_game.loadFromFile("Arkanoid\\font2.ttf");
-		font_for_buttons.loadFromFile("Arkanoid\\font3.ttf");
-		menu_texture.loadFromFile("Arkanoid\\menu_background.png");
-		about_texture.loadFromFile("Arkanoid\\about_page.png");
-		controllers_arrows_texture.loadFromFile("Arkanoid\\move_puddle2.png");
-		controllers_explanation_texture.loadFromFile("Arkanoid\\controllers_explanation.png");
-		controllers_wasd_texture.loadFromFile("Arkanoid\\move_puddle1.png");
+		font_for_game.loadFromFile("font2.ttf");
+		font_for_buttons.loadFromFile("font3.ttf");
+		menu_texture.loadFromFile("menu_background.png");
+		about_texture.loadFromFile("about_page.png");
+		controllers_arrows_texture.loadFromFile("move_puddle2.png");
+		controllers_explanation_texture.loadFromFile("controllers_explanation.png");
+		controllers_wasd_texture.loadFromFile("move_puddle1.png");
 
 		menu.setTexture(menu_texture);
 		about_page.setTexture(about_texture);

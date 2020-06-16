@@ -24,9 +24,9 @@ public:
 		this->is_pause = 1;
 		this->button_num = 0;
 
-		font_for_game.loadFromFile("Arkanoid\\font2.ttf");
-		font_for_buttons.loadFromFile("Arkanoid\\font3.ttf");
-		pause_texture.loadFromFile("Arkanoid\\menu_background.png");
+		font_for_game.loadFromFile("font2.ttf");
+		font_for_buttons.loadFromFile("font3.ttf");
+		pause_texture.loadFromFile("menu_background.png");
 
 		pause.setTexture(pause_texture);
 
