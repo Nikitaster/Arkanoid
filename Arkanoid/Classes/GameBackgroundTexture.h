@@ -4,7 +4,7 @@
 #include "Texture.h"
 class GameBackgroundTexture : public Texture
 {
-	std::string path = "game.png";
+	std::string path = "Arkanoid\\game.png";
 public:
 	GameBackgroundTexture();
 	sf::Texture &get_texture() { return this->texture; }

@@ -7,9 +7,9 @@ GameOverScene::GameOverScene() {
 	this->isActive = 1;
 	this->button_pressed = false;
 	this->button_num = 0;
-	font1.loadFromFile("font2.ttf");
-	font2.loadFromFile("font3.ttf");
-	gameOver_texture.loadFromFile("loser.png");
+	font1.loadFromFile("Arkanoid\\font2.ttf");
+	font2.loadFromFile("Arkanoid\\font3.ttf");
+	gameOver_texture.loadFromFile("Arkanoid\\loser.png");
 	gameOver.setTexture(gameOver_texture);
 	button1.setFont(font2);
 	button2.setFont(font2);
