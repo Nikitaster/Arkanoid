@@ -61,3 +61,34 @@ TEST_CASE("brick pile") {
     BrickPile pile;
     REQUIRE(pile.bricks.size() == 28);
 }
+
+TEST_CASE("hit brick") {
+    Brick brick;
+    brick.hitBy();
+    REQUIRE(brick.isDead == true);
+}
+
+SCENARIO("Puddle stops", "[puddle]") {
+    GIVEN("Puddle object") {
+        Puddle puddle;
+        REQUIRE(puddle.velocity.get_speedX() == 7);
+
+        WHEN("Puddle on the right") {
+            puddle.get_sprite().setPosition(800, 0);
+            puddle.move(800);
+
+            THEN("Puddle must stop") {
+                REQUIRE(puddle.velocity.get_speedX() == 0);
+            }
+        }
+
+        WHEN("Puddle on the left") {
+            puddle.get_sprite().setPosition(0 - puddle.velocity.get_speedX(), 0);
+            puddle.move(800);
+
+            THEN("Puddle must stop") {
+                REQUIRE(puddle.velocity.get_speedX() == 0);
+            }
+        }
+    }
+}
