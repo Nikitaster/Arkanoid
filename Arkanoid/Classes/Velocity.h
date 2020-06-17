@@ -2,7 +2,7 @@
 #define Velocity_H
 
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 
 class Velocity {
 	float speed_x;
