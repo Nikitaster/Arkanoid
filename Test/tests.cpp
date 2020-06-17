@@ -61,3 +61,39 @@ TEST_CASE("brick pile") {
     BrickPile pile;
     REQUIRE(pile.bricks.size() == 28);
 }
+
+SCENARIO("MenuScene", "[menu]") {
+    GIVEN("MenuScene object with default params") {
+        sf::RenderWindow window;
+        PauseScene pause;
+        MenuScene menu;
+        REQUIRE(menu.get_menu_statement() == true);
+    }
+}
+
+SCENARIO("PauseScene", "[pause]") {
+    GIVEN("PauseScene object with default params") {
+        sf::RenderWindow window;
+        PauseScene pause;
+        REQUIRE(pause.get_pause_statement() == true);
+        REQUIRE(pause.get_button() == 0);
+        REQUIRE(pause.check_button_pressed(window) == 0);
+    }
+}
+
+SCENARIO("GameScene", "[game]") {
+    GIVEN("GameScene object with default params") {
+        GameScene game;
+        REQUIRE(game.isGameOver() == false);
+        REQUIRE(game.onPause() == false);
+    }
+}
+
+SCENARIO("GameOverScene", "[gameover]") {
+    GIVEN("GameOverScene object with default params") {
+        GameOverScene gameover;
+        REQUIRE(gameover.getStatement() == true);
+        REQUIRE(gameover.getButton() == 0);
+        REQUIRE(gameover.getButtonStatus() == 0);
+    }
+}
