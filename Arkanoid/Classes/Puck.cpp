@@ -117,15 +117,22 @@ void Puck::collideInto(Puddle &puddle)
 bool Puck::collideInto(BaseBrick &brick)
 {
 	bool kill = false;
-	if (Collision::PixelPerfectTest(this->get_sprite(), brick.get_sprite()))
+
+	sf::Sprite next_sprite;
+	next_sprite.setTexture(*this->get_sprite().getTexture());
+	next_sprite.setTextureRect(this->get_sprite().getTextureRect());
+	next_sprite.setPosition(this->get_sprite().getPosition());
+	next_sprite.move(sf::Vector2f(this->velocity.get_speedX(), this->velocity.get_speedY()));
+
+	if (Collision::PixelPerfectTest(next_sprite, brick.get_sprite()))
 	{
 		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
 		std::cout << "BRICK COLLIDE" << std::endl;
 		if (brick.hitBy())
 			kill = true;
 
-		if (this->sprite.getPosition().y + this->getWidth() / 2 < brick.get_sprite().getPosition().y ||
-			this->sprite.getPosition().y + this->getWidth() / 2 > brick.get_sprite().getPosition().y + brick.getHeight())
+		if (next_sprite.getPosition().y + this->getWidth() / 2 < brick.get_sprite().getPosition().y ||
+			next_sprite.getPosition().y + this->getWidth() / 2 > brick.get_sprite().getPosition().y + brick.getHeight())
 		{
 			std::cout << "NO! NO! NO!" << std::endl;
 			this->velocity.reverseY();
