@@ -124,16 +124,29 @@ bool Puck::collideInto(BaseBrick &brick)
 		if (brick.hitBy())
 			kill = true;
 
-		if (this->sprite.getPosition().y + this->getWidth() / 2 < brick.get_sprite().getPosition().y ||
-			this->sprite.getPosition().y + this->getWidth() / 2 > brick.get_sprite().getPosition().y + brick.getHeight())
+		if (this->sprite.getPosition().y + this->getWidth() / 2 < brick.get_sprite().getPosition().y)
 		{
 			std::cout << "NO! NO! NO!" << std::endl;
+			this->get_sprite().setPosition(this->get_sprite().getPosition().x, brick.get_sprite().getPosition().y + this->getHeight());
+			this->velocity.reverseY();
+		}
+		else if (this->sprite.getPosition().y + this->getWidth() / 2 > brick.get_sprite().getPosition().y + brick.getHeight())
+		{
+			std::cout << "NO! NO! NO!" << std::endl;
+			this->get_sprite().setPosition(this->get_sprite().getPosition().x, brick.get_sprite().getPosition().y - this->getHeight());
 			this->velocity.reverseY();
 		}
 		else
 		{
-			std::cout << "SIDE SIDE SIDE" << std::endl;
-			this->velocity.reverseX();
+			if (this->get_sprite().getPosition().x < brick.get_sprite().getPosition().x) {
+				this->get_sprite().setPosition(brick.get_sprite().getPosition().x - this->getWidth(), this->get_sprite().getPosition().y);
+			}
+			else
+			{
+				this->get_sprite().setPosition(brick.get_sprite().getPosition().x + this->getWidth(), this->get_sprite().getPosition().y);
+			}
+			//std::cout << "SIDE SIDE SIDE" << std::endl;
+			//this->velocity.reverseX();
 		}
 		std::cout << "NEW DIRECTION " << this->velocity.getDirection() << std::endl;
 		return kill;
