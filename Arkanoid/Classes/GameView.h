@@ -21,7 +21,7 @@ public:
 	void process_draw(sf::RenderWindow &window);
 	void process_logic();
 	void process_events(sf::RenderWindow &window);
-	int bricks_left()
+	/*int bricks_left()
 	{
 		int size = 0;
 		for (auto it = this->model->bricks.get_bricks().begin(); it < this->model->bricks.get_bricks().end(); ++it)
@@ -30,7 +30,7 @@ public:
 				++size;
 		}
 		return size;
-	}
+	}*/
 };
 
 #endif

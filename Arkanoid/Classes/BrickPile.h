@@ -5,13 +5,14 @@
 #include "Brick.h"
 
 class BrickPile{
-	std::vector<Brick> bricks;
+	//std::vector<Brick> bricks;
+	Brick* bricks[29] = {};
 public:
 
 	BrickPile();
 
 	void generate_objects();
-	std::vector<Brick> & get_bricks() { return this->bricks; }
+	Brick ** get_bricks() { return this->bricks; }
 };
 
 #endif // BrickPile_H
