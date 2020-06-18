@@ -35,7 +35,7 @@ void GameView::run(sf::RenderWindow &window)
 
 void GameView::process_logic()
 {
-	std::cout << this->model->bricks.bricks_left() << std::endl;
+	//std::cout << this->model->bricks.bricks_left() << std::endl;
 	this->controller->move_puddle();
 	if (this->model->pucks.have_alive_puck())
 	{
@@ -67,22 +67,22 @@ void GameView::process_events(sf::RenderWindow &window)
 		if (event.type == sf::Event::Closed)
 			window.close();
 		if (event.text.unicode < 128)
-			std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
+		//	std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
 		if (event.type == sf::Event::KeyPressed)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
-				std::cout << "Move LEFT" << event.key.code << std::endl;
+				//std::cout << "Move LEFT" << event.key.code << std::endl;
 				this->controller->move_puddle_left();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
-				std::cout << "Move RIGHT" << std::endl;
+				//std::cout << "Move RIGHT" << std::endl;
 				this->controller->move_puddle_right();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
-				std::cout << "PAUSE" << std::endl;
+			//	std::cout << "PAUSE" << std::endl;
 				this->onPause = true;
 			}
 		}
@@ -96,7 +96,7 @@ void GameView::process_events(sf::RenderWindow &window)
 
 void GameView::process_draw(sf::RenderWindow &window)
 {
-	std::cout << "SCORE: " << this->score << std::endl;
+	//std::cout << "SCORE: " << this->score << std::endl;
 	window.clear();
 	window.draw(this->background.get_sprite());
 	//        this->window.draw(shape);
