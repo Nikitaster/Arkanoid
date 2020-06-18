@@ -114,7 +114,7 @@ void Puck::collideInto(Puddle &puddle)
 	}
 };
 
-void Puck::collideInto(Brick &brick)
+bool Puck::collideInto(Brick &brick)
 {
 	if (Collision::PixelPerfectTest(this->get_sprite(), brick.get_sprite()))
 	{
@@ -134,5 +134,7 @@ void Puck::collideInto(Brick &brick)
 			this->velocity.reverseX();
 		}
 		std::cout << "NEW DIRECTION " << this->velocity.getDirection() << std::endl;
+		return true;
 	}
+	return false;
 }

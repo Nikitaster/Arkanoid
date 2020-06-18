@@ -40,12 +40,20 @@ void GameView::process_logic()
 	{
 		this->model->pucks.get_alive_puck().move();
 		this->model->pucks.get_alive_puck().collideInto(this->model->puddle);
-        for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
+        for (auto it = this->model->bricks.get_bricks().begin(); it < this->model->bricks.get_bricks().end(); it++)
         {
-            if (!it->isDead)
-                this->model->pucks.get_alive_puck().collideInto(*it);
+			if (!it->isDead)
+				if (this->model->pucks.get_alive_puck().collideInto(*it))
+					this->score++;
         }
 	}
+	if (!this->bricks_left())
+	{
+		// Обработка смены уровня игрока
+		this->model->bricks.get_bricks().clear();
+		this->model->bricks.generate_objects();
+	}
+	
 }
 
 void GameView::process_events(sf::RenderWindow &window)
@@ -85,10 +93,11 @@ void GameView::process_events(sf::RenderWindow &window)
 
 void GameView::process_draw(sf::RenderWindow &window)
 {
+	std::cout << "SCORE: " << this->score << std::endl;
 	window.clear();
 	window.draw(this->background.get_sprite());
 	//        this->window.draw(shape);
-	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
+	for (auto it = this->model->bricks.get_bricks().begin(); it < this->model->bricks.get_bricks().end(); it++)
 		if (!it->isDead)
 			window.draw(it->get_sprite());
 
