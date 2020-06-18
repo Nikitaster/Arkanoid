@@ -85,7 +85,7 @@ void MainView::run()
 				menu_scene->get_menu_statement() = true;
 				reset_game_scene();
 				current_runner = "menu";
-				sf::sleep(sf::milliseconds(100));
+				sf::sleep(sf::milliseconds(250));
 			}
 		}
 		if (current_runner == "gameOver")
