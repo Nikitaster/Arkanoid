@@ -1,18 +1,37 @@
 #include "BrickPile.h"
-BrickPile::BrickPile() {
-	this->generate_objects();
+BrickPile::BrickPile(unsigned level, unsigned num_blocks) {
+    this->num_hard_blocks = 0;
+	this->generate_objects(level, num_blocks);
 }
 
-void BrickPile::generate_objects(){
+void BrickPile::generate_objects(unsigned level, unsigned num_blocks){
+    this->size = num_blocks;
     int count = 0;
-    for (int i = 35; i < 143 && count < 28; i+=27)
-	{
-        for (int j = 43; j < 714 && count < 28; j += 102)
-        {
-            //this->bricks.push_back(Brick(j, i, 100, 25));
-            this->bricks[count] = new Bbrick(j, i, 100, 25);
-            ++count;
-        }
+    int max_col = 714;
+    int row = 35;
+    int col = 43;
+    int drow = 27;
+    int dcol = 102;
+    while (count < this->size)
+    {
+        if (count % 7 == 0 && count)
+            row = row + drow;
+        this->bricks[count] = new Brick(col, row, 100, 25);
+        col = (col + dcol) % max_col;
+        ++count;
     }
-    this->bricks[28] = new Abrick();
+    if (level == 2)
+    {
+        this->bricks[num_blocks] = new Abrick();
+        this->size++;
+        this->num_hard_blocks = 1;
+    }
+}
+
+BrickPile::~BrickPile()
+{
+    for (unsigned i = 0; i < this->size; i++)
+    {
+        delete this->bricks[i];
+    }
 }
