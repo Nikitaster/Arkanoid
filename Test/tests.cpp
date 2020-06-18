@@ -63,7 +63,7 @@ TEST_CASE("brick pile") {
 }
 
 TEST_CASE("hit brick") {
-    Brick brick;
+    Brick brick;    
     brick.hitBy();
     REQUIRE(brick.isDead == true);
 }
@@ -88,6 +88,32 @@ SCENARIO("Puddle stops", "[puddle]") {
 
             THEN("Puddle must stop") {
                 REQUIRE(puddle.velocity.get_speedX() == 0);
+            }
+        }
+    }
+}
+
+SCENARIO("Puck supply", "[puck]") {
+    GIVEN("Supply of objects puck ") {
+        PuckSupply pucks;
+        REQUIRE(pucks.have_alive_puck() == true);
+
+        WHEN("Puck goes down for 3 times") {
+            pucks.get_alive_puck().isDead = true;
+            pucks.get_alive_puck().isDead = true;
+            pucks.get_alive_puck().isDead = true;
+
+            THEN("All pucks in puck supply must be gone.......") {
+                REQUIRE(pucks.have_alive_puck() == false);
+            }
+        }
+
+        WHEN("Puck goes down for less than 3 times") {
+            pucks.get_alive_puck().isDead = true;
+            pucks.get_alive_puck().isDead = true;
+
+            THEN("We still have some pucks in puck supply") {
+                REQUIRE(pucks.have_alive_puck() == true);
             }
         }
     }
