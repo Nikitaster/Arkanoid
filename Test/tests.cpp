@@ -59,13 +59,19 @@ TEST_CASE("puck") {
 
 TEST_CASE("brick pile") {
     BrickPile pile;
-    REQUIRE(pile.bricks.size() == 28);
+    REQUIRE(pile.get_size() == 7);
 }
 
-TEST_CASE("hit brick") {
+TEST_CASE("hit regular brick") {
     Brick brick;
     brick.hitBy();
     REQUIRE(brick.isDead == true);
+}
+
+TEST_CASE("hit unbreakeable brick") {
+    Abrick abrick;
+    abrick.hitBy();
+    REQUIRE(abrick.isDead == false);
 }
 
 SCENARIO("MenuScene", "[menu]") {
@@ -150,6 +156,22 @@ SCENARIO("Puck supply", "[puck]") {
 
             THEN("We still have some pucks in puck supply") {
                 REQUIRE(pucks.have_alive_puck() == true);
+            }
+        }
+    }
+}
+
+SCENARIO("New level", "[levels]") {
+    GIVEN("Brick pile ") {
+        BrickPile pile;
+        pile.generate_objects();
+        REQUIRE(pile.get_size() == 7);
+
+        WHEN("new level starts") {
+            pile.generate_objects(1, pile.get_size() + 3);
+
+            THEN("New level begins") {
+                REQUIRE(pile.get_size() == 10);
             }
         }
     }
