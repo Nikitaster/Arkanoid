@@ -17,6 +17,7 @@ class GameView {
 public:
 	bool onPause = false;
 	bool isGameOver = false;
+	bool isGameWin = false;
 	GameView(GameModel &model, GameController &controller);
 	void run(sf::RenderWindow &window);
 	void process_draw(sf::RenderWindow &window);

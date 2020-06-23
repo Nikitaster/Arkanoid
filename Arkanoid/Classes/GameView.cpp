@@ -122,6 +122,10 @@ void GameView::process_draw(sf::RenderWindow &window)
 
 	//	сюда пропишите убийство кирпичей
 	//	вставим сюда отрисовку окна победы
+	if (level == 4) {
+		window.clear();
+		this->isGameWin = true;
+	}
 
 	window.display();
 }

@@ -1,6 +1,5 @@
 #include "catch.hpp"
 #include "../Arkanoid/Classes/MainView.h"
-
 using namespace Catch::Matchers;
 
 SCENARIO("Velocity", "[velocity]") {
@@ -108,6 +107,15 @@ SCENARIO("GameOverScene", "[gameover]") {
         REQUIRE(gameover.getButton() == 0);
         REQUIRE(gameover.getButtonStatus() == 0);
     }
+}
+
+SCENARIO("GameWinScene", "[gamewin]") {
+	GIVEN("GameWinScene object with default params") {
+		GameWinScene gamewin;
+		REQUIRE(gamewin.getStatement() == true);
+		REQUIRE(gamewin.getButton() == 0);
+		REQUIRE(gamewin.getButtonStatus() == 0);
+	}
 }
 
 SCENARIO("Puddle stops", "[puddle]") {
