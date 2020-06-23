@@ -8,12 +8,13 @@ MainView::MainView()
 	menu_scene = new MenuScene();
 	over_scene = new GameOverScene();
 	pause_scene = new PauseScene();
-	//win_scene = new GameWinScene();
+	win_scene = new GameWinScene();
 
 	runners = { { "menu", std::bind(&MainView::show_menu, this) },
 	{ "game", std::bind(&MainView::show_game, this) },
 	{ "pause", std::bind(&MainView::show_pause, this) },
 	{ "gameOver", std::bind(&MainView::show_game_over, this) },
+	{ "gameWin", std::bind(&MainView::show_game_win, this) },
 	};
 	current_runner = "menu";
 }
@@ -24,6 +25,7 @@ MainView::~MainView()
 	delete menu_scene;
 	delete over_scene;
 	delete pause_scene;
+	delete win_scene;
 }
 
 void MainView::show_menu()
@@ -44,6 +46,11 @@ void MainView::show_pause()
 void MainView::show_game_over()
 {
 	over_scene->run(this->window);
+}
+
+void MainView::show_game_win()
+{
+	win_scene->run(this->window);
 }
 
 void MainView::reset_game_scene()
@@ -67,6 +74,8 @@ void MainView::run()
 				current_runner = "pause";
 			if (game_scene->isGameOver())
 				current_runner = "gameOver";
+			if (game_scene->isGameWin())
+				current_runner = "gameWin";
 		}
 		if (current_runner == "pause")
 		{
@@ -85,7 +94,7 @@ void MainView::run()
 				menu_scene->get_menu_statement() = true;
 				reset_game_scene();
 				current_runner = "menu";
-				sf::sleep(sf::milliseconds(100));
+				sf::sleep(sf::milliseconds(250));
 			}
 		}
 		if (current_runner == "gameOver")
@@ -97,6 +106,17 @@ void MainView::run()
 				menu_scene->get_menu_statement() = true;
 				over_scene->getButton() = 0;
 				over_scene->getButtonStatus() = false;
+				sf::sleep(sf::milliseconds(100));
+			}
+		}
+		if (current_runner == "gameWin") {
+			if (win_scene->getButton() == 1 && win_scene->getButtonStatus())
+			{
+				reset_game_scene();
+				current_runner = "menu";
+				menu_scene->get_menu_statement() = true;
+				win_scene->getButton() = 0;
+				win_scene->getButtonStatus() = false;
 				sf::sleep(sf::milliseconds(100));
 			}
 		}

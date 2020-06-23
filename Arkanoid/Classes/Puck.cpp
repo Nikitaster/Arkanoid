@@ -114,25 +114,50 @@ void Puck::collideInto(Puddle &puddle)
 	}
 };
 
-void Puck::collideInto(Brick &brick)
+bool Puck::collideInto(BaseBrick& brick)
 {
+	bool kill = false;
 	if (Collision::PixelPerfectTest(this->get_sprite(), brick.get_sprite()))
 	{
+
+		auto brickX = brick.get_sprite().getPosition().x;
+		auto puckX = this->get_sprite().getPosition().x;
+
+		auto brickY = brick.get_sprite().getPosition().y;
+		auto puckY = this->get_sprite().getPosition().y;
+
+
 		std::cout << "Direction " << this->velocity.getDirection() << std::endl;
 		std::cout << "BRICK COLLIDE" << std::endl;
-		brick.hitBy();
+		if (brick.hitBy())
+			kill = true;
 
-		if (this->sprite.getPosition().y + this->getWidth() / 2 < brick.get_sprite().getPosition().y ||
-			this->sprite.getPosition().y + this->getWidth() / 2 > brick.get_sprite().getPosition().y + brick.getHeight())
+		if (puckY + this->getWidth() / 2 > brickY + brick.getHeight())
 		{
 			std::cout << "NO! NO! NO!" << std::endl;
+			this->get_sprite().setPosition(puckX, brickY + brick.getHeight());
 			this->velocity.reverseY();
+		}
+		else if (puckY + this->getWidth() / 2 < brickY)
+		{
+			std::cout << "NO! NO! NO!" << std::endl;
+			this->get_sprite().setPosition(puckX, brickY - this->getHeight());
+			this->velocity.reverseY();
+		}
+		else if (puckX < brickX)
+		{
+			std::cout << "SIDE SIDE SIDE" << std::endl;
+			this->get_sprite().setPosition(brickX - this->getWidth(), puckY);
+			this->velocity.reverseX();
 		}
 		else
 		{
 			std::cout << "SIDE SIDE SIDE" << std::endl;
+			this->get_sprite().setPosition(brickX + brick.getWidth(), puckY);
 			this->velocity.reverseX();
 		}
 		std::cout << "NEW DIRECTION " << this->velocity.getDirection() << std::endl;
+		return kill;
 	}
+	return kill;
 }

@@ -35,17 +35,31 @@ void GameView::run(sf::RenderWindow &window)
 
 void GameView::process_logic()
 {
+	//std::cout << this->model->bricks.bricks_left() << std::endl;
 	this->controller->move_puddle();
 	if (this->model->pucks.have_alive_puck())
 	{
 		this->model->pucks.get_alive_puck().move();
 		this->model->pucks.get_alive_puck().collideInto(this->model->puddle);
-        for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
+        for (int i = 0; i < this->model->bricks.get_size(); i++)
         {
-            if (!it->isDead)
-                this->model->pucks.get_alive_puck().collideInto(*it);
+			if (!this->model->bricks.get_bricks()[i]->isDead)
+				if (this->model->pucks.get_alive_puck().collideInto(*this->model->bricks.get_bricks()[i]))
+					this->score++;
         }
 	}
+	if (!this->model->bricks.bricks_left())
+	{
+		// Обработка смены уровня игрока
+		this->model->bricks.clear();
+		this->model->pucks.get_alive_puck().get_sprite().setPosition(this->model->puddle.get_sprite().getPosition().x + this->model->puddle.getWidth() / 2, 600 / 2 - 100);
+		this->model->pucks.get_alive_puck().velocity.setDirection(90);
+		this->model->bricks.generate_objects(++level, this->model->bricks.get_size() + 3);
+		if (level == 4) {
+			this->isGameWin = true;
+		}
+	}
+	
 }
 
 void GameView::process_events(sf::RenderWindow &window)
@@ -56,22 +70,22 @@ void GameView::process_events(sf::RenderWindow &window)
 		if (event.type == sf::Event::Closed)
 			window.close();
 		if (event.text.unicode < 128)
-			std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
+		//	std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
 		if (event.type == sf::Event::KeyPressed)
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
-				std::cout << "Move LEFT" << event.key.code << std::endl;
+				//std::cout << "Move LEFT" << event.key.code << std::endl;
 				this->controller->move_puddle_left();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
-				std::cout << "Move RIGHT" << std::endl;
+				//std::cout << "Move RIGHT" << std::endl;
 				this->controller->move_puddle_right();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
-				std::cout << "PAUSE" << std::endl;
+			//	std::cout << "PAUSE" << std::endl;
 				this->onPause = true;
 			}
 		}
@@ -85,12 +99,13 @@ void GameView::process_events(sf::RenderWindow &window)
 
 void GameView::process_draw(sf::RenderWindow &window)
 {
+	//std::cout << "SCORE: " << this->score << std::endl;
 	window.clear();
 	window.draw(this->background.get_sprite());
 	//        this->window.draw(shape);
-	for (auto it = this->model->bricks.bricks.begin(); it < this->model->bricks.bricks.end(); it++)
-		if (!it->isDead)
-			window.draw(it->get_sprite());
+	for (int i = 0; i < this->model->bricks.get_size(); i++)
+		if (!this->model->bricks.get_bricks()[i]->isDead)
+			window.draw(this->model->bricks.get_bricks()[i]->get_sprite());
 
 	window.draw(this->model->puddle.get_sprite());
 
@@ -110,6 +125,9 @@ void GameView::process_draw(sf::RenderWindow &window)
 
 	//	сюда пропишите убийство кирпичей
 	//	вставим сюда отрисовку окна победы
+	if (this->isGameWin) {
+		window.clear();
+	}
 
 	window.display();
 }

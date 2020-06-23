@@ -19,6 +19,7 @@ public:
 
 	inline bool & onPause() { return this->game_view->onPause; }
 	inline bool & isGameOver() { return this->game_view->isGameOver; }
+	inline bool & isGameWin() { return this->game_view->isGameWin; }
 
 	void run(sf::RenderWindow &window);
 };

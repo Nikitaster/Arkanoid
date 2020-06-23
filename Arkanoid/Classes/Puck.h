@@ -15,7 +15,7 @@ public:
 	Puck();
 	void move(int width = 800, int height = 600);
 	void collideInto(Puddle &puddle);
-    void collideInto(Brick &brick);
+    bool collideInto(BaseBrick &brick);
 	int getWidth() { return this->width; }
 	int getHeight() { return this->height; }
 };
