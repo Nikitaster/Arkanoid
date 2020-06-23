@@ -26,6 +26,9 @@ void BrickPile::generate_objects(unsigned level, unsigned num_blocks){
         this->size++;
         this->num_hard_blocks = 1;
     }
+	if (level == 3) {
+		this->num_hard_blocks = 0;
+	}
 }
 
 BrickPile::~BrickPile()

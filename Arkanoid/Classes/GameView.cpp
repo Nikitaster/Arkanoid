@@ -55,6 +55,9 @@ void GameView::process_logic()
 		this->model->pucks.get_alive_puck().get_sprite().setPosition(this->model->puddle.get_sprite().getPosition().x + this->model->puddle.getWidth() / 2, 600 / 2 - 100);
 		this->model->pucks.get_alive_puck().velocity.setDirection(90);
 		this->model->bricks.generate_objects(++level, this->model->bricks.get_size() + 3);
+		if (level == 4) {
+			this->isGameWin = true;
+		}
 	}
 	
 }
@@ -122,9 +125,8 @@ void GameView::process_draw(sf::RenderWindow &window)
 
 	//	сюда пропишите убийство кирпичей
 	//	вставим сюда отрисовку окна победы
-	if (level == 4) {
+	if (this->isGameWin) {
 		window.clear();
-		this->isGameWin = true;
 	}
 
 	window.display();
