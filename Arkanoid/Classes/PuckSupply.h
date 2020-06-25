@@ -3,7 +3,7 @@
 
 #include "Puck.h"
 
-class PuckSupply: public Puck{
+class PuckSupply{
     std::vector<Puck> pucks;
 public:
 	PuckSupply();
