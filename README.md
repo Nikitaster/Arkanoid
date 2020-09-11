@@ -1,5 +1,8 @@
 # Project Arkanoid 
 
+## Preview
+<img src="./preview.gif" width="50%">
+
 ## Visual Studio Installation on Windows
 
 ### Клонирование проекта:
