@@ -3,6 +3,9 @@
 ## Preview
 <img src="./preview.gif" width="50%">
 
+## Installer for Windows 
+[Google drive](https://drive.google.com/file/d/1-qUNyqh0v8LNjTbJuzK8_DJVlLjEY_0K/view?usp=sharing)
+
 ## Visual Studio Installation on Windows
 
 ### Клонирование проекта:
